@@ -52,7 +52,7 @@ const createData = async (cols, row_id, rowCount) => {
         const response = await axios.post(`/api_table_data/`, {
             header: header,
             property_type: 'Text',
-            width: 329,
+            width: 309,
             order: dataCount,
             table_row: row_id
         })
@@ -99,7 +99,7 @@ export const insert_column = (order, table_rows, col_index, direction, table_ind
             const response = await axios.post(`api_table_data/`, {
                 header: header,
                 property_type: 'Text',
-                width: 329,
+                width: 309,
                 order: order,
                 table_row: table_rows[i]
             })
@@ -242,7 +242,7 @@ export const add_tag_to_cell = (tag, data_id, table_index, row_index, col_index,
     async(dispatch) => {
 
         // If the user clicked on something other than a tag option or tag, return
-        if (e.className !== "tag-option" && e.className !== "span-tag") return
+        if (e.className !== "tag-option" && !e.className.includes("span-tag")) return
 
         // Get tag from header
         const head = table.rows[0].data[col_index]
