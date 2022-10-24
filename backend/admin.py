@@ -40,7 +40,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name', 'is_active', 'is_admin', 'is_staff', 'is_superuser')
+        fields = ('email', 'password', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -53,7 +53,7 @@ class AccountAdmin(UserAdmin):
     add_form = UserCreationForm
 
     ordering = ('email',)
-    list_display = ['email', 'date_joined', 'last_login', 'is_admin']
+    list_display = ['email', 'date_joined', 'last_login']
     search_fields = ['email']
     readonly_fields = ('date_joined', 'last_login')
 
