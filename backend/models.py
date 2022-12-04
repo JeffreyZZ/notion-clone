@@ -47,6 +47,9 @@ class User(AbstractUser):
 
     objects = MyAccountManager()
 
+    class Meta:
+        db_table = 'quesnotion_users'
+
     def __str__(self):
         return f"{self.email}"
     
