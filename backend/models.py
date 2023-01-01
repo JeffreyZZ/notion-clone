@@ -39,6 +39,7 @@ class MyAccountManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    id = models.BigAutoField(primary_key=True)
     email = models.EmailField(max_length=254, unique=True)
     username = None
 
@@ -49,6 +50,9 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'quesnotion_users'
+        # this is to ignore the existing 'user' table when is False, no database table 
+        # creation or deletion operations will be performed for this model. 
+        managed = False 
 
     def __str__(self):
         return f"{self.email}"
@@ -62,7 +66,7 @@ class User(AbstractUser):
 class Page(models.Model):
     name = models.CharField(max_length=64)
     parent = models.ForeignKey("Page", related_name='children', null=True, blank=True, on_delete=models.CASCADE)
-    creator = models.ForeignKey("User", on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.CharField(max_length=100, null=True, blank=True)
     closed=models.BooleanField(default=True)
 
