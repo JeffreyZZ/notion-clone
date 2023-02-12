@@ -11,6 +11,7 @@ from .serializers import *
 
 from knox.models import AuthToken
 from django.conf import settings
+import json
 
 #https://medium.com/a-layman/build-single-page-application-with-react-and-django-part-1-connect-react-app-with-django-app-dbf6b5ec52f4
 
@@ -28,7 +29,27 @@ class PageViewSet(viewsets.ModelViewSet):
             queryset = Page.objects.filter(parent=None)
         else:
             queryset = Page.objects.all()
+
+        # get the pages first 
+        if queryset.order_by('id').count() == 0:
+            #PATCH:if the user has no page, then create a default one
+            data = {
+                'name': 'Untitled',
+                'parent': None, 
+                'creator': user_id,
+                'children': [], 
+                'page_elements':[], 
+                'group':1
+            }
+            json_string = json.dumps(data)
+            serializer = AddPageSerializer(data=json.loads(json_string))
+            if serializer.is_valid():
+                serializer.save()
+            else: 
+                print(serializer.errors)
+
         return queryset.order_by('id')
+
     serializer_class = PageSerializer
 
 # Add Page API
@@ -101,7 +122,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-#Register API 
+# Register API 
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 

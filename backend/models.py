@@ -37,7 +37,6 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     email = models.EmailField(max_length=254, unique=True)
