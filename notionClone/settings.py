@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'knox',
     'corsheaders',
     'frontend',
+    'martor',
     'storages',
 ]
 
@@ -101,7 +102,7 @@ DATABASES = {
          'ENGINE': 'django.db.backends.mysql',
          'NAME': 'quesnotion',
          'USER': 'root',
-         'PASSWORD': '123',
+         'PASSWORD': '',
          'HOST': 'localhost',
          'PORT': '3306',
          'OPTIONS': {'charset': 'utf8mb4'},

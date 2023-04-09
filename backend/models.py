@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from martor.models import MartorField
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -322,3 +323,72 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 #End of Profile
+
+
+class Question(models.Model):
+    post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=5000, default='')
+    body = MartorField()
+    date = models.DateTimeField(auto_now_add=True)
+    active_date = models.DateTimeField(auto_now=True)
+    q_reputation = models.IntegerField(default=0)
+    q_edited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='q_edited_by', default='', null=True, blank=True)
+    q_edited_time = models.DateTimeField(auto_now_add=True)  
+    is_bountied = models.BooleanField(default=False)
+    bounty_date_announced = models.DateTimeField(auto_now_add=True)
+    limit_exced = models.BooleanField(default=False)
+    is_edited = models.BooleanField(default=False)
+    is_protected = models.BooleanField(default=False)
+    why_editing_question = models.CharField(max_length=5000, default='')
+    is_deleted = models.BooleanField(default=False)
+    answeredOnMinusTwo_Downvote = models.DateTimeField(auto_now_add=True)
+    is_closed = models.BooleanField(default=False)
+    closed_at = models.DateTimeField(auto_now_add=True, blank=True)
+    is_answer_accepted = models.BooleanField(default=False)
+    deleted_time = models.DateTimeField(auto_now_add=True, blank=True)
+
+    class Meta:
+        ordering = ["-date"]
+
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(
+    #             f"{self.title}-{self.id}", max_length=1000, lowercase=True
+    #         )
+
+    def __str__(self):
+        return f'[USER] - {self.post_owner} = [TITLE] - {self.title} - [Deleted?] - {self.is_deleted} - [Bountied?] - {self.is_bountied}'
+
+    def get_absolute_url(self):
+        # 'slug':self.slug})
+        return reverse('qa:questionDetailView', kwargs={'pk': self.pk, })
+
+    @property
+    def count_answers(self):
+        return Answer.objects.filter(questionans=self).exclude(is_deleted=True).count()
+
+    @property
+    def calculate_UpVote_DownVote(self):
+        get_Upvotes = self.qupvote_set.count()
+        get_DownVotes = self.qdownvote_set.count()
+        return get_Upvotes - get_DownVotes
+
+    @property
+    def calculate_viewers(self):
+        return self.viewers.all().count()
+
+    @property
+    def count_all_bookmarkers(self):
+        return self.bookmarkquestion_set.all().count()
+
+    @property
+    def lastEdited_by(self):
+        return self.q_edited_by
+
+    @property
+    def get_all_tags(self):
+        return self.tags.all()
+
+    # @property
+    # def count_questions(self):
+    #     return Question.objects.all().count()

@@ -8,6 +8,7 @@ import { create_element } from "../../../../../../actions"
 
 // Dropdown photos
 import text from "./dropdown_icons/text.png";
+import question from "./dropdown_icons/question.png";
 import to_do from "./dropdown_icons/to-do.png"; 
 import heading_1 from "./dropdown_icons/heading_1.png";
 import heading_2 from "./dropdown_icons/heading_2.png";
@@ -46,6 +47,16 @@ const CreateElement_dropdownContent = (props) => {
                     photo={text}
                     header="Text"
                     subheader="Just start writing with plain text."
+                />
+
+                {/* Question */}
+                <DropdownOption
+                    create_element_func={create_element_func}
+                    elementType="Text"
+                    element_above_order={element_above_order}
+                    photo={question}
+                    header="Question"
+                    subheader="Just start asking questions."
                 />
 
                 {/* To do */}
