@@ -11,6 +11,7 @@ router.register(r'page_elements', views.Page_elementViewSet)
 router.register(r'Heading_1s', views.Heading_1ViewSet)
 router.register(r'Heading_2s', views.Heading_2ViewSet)
 router.register(r'Texts', views.TextViewSet)
+router.register(r'Questions', views.QuestionViewSet)
 router.register(r'pageLinks', views.PageLinkViewSet)
 router.register(r'to_dos', views.ToDoViewSet)
 

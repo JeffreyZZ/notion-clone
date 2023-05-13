@@ -325,6 +325,13 @@ def save_user_profile(sender, instance, **kwargs):
 #End of Profile
 
 
+# Begin of Question
+ACTIVE_FOR_CHOICES = [
+    ('ANSWERED', 'Answered'),
+    ('MODIFIED', 'Modified'),
+    ('ASKED', 'Asked'),
+]
+
 class Question(models.Model):
     post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=5000, default='')
@@ -346,9 +353,12 @@ class Question(models.Model):
     closed_at = models.DateTimeField(auto_now_add=True, blank=True)
     is_answer_accepted = models.BooleanField(default=False)
     deleted_time = models.DateTimeField(auto_now_add=True, blank=True)
+    reversal_monitor = models.BooleanField(default=False)
+    lastActiveFor = models.CharField(choices=ACTIVE_FOR_CHOICES, max_length=5000, default='', blank=True)
 
     class Meta:
         ordering = ["-date"]
+        db_table = "qa_question"
 
     # def save(self, *args, **kwargs):
     #     if not self.slug:
@@ -389,6 +399,4 @@ class Question(models.Model):
     def get_all_tags(self):
         return self.tags.all()
 
-    # @property
-    # def count_questions(self):
-    #     return Question.objects.all().count()
+    # End of Question

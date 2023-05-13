@@ -54,8 +54,15 @@ export const select_page = (page_id) =>
     };
 
 // Create page element
-export const create_element = (current_index, page_id, element_type, order_on_page, element_above_order,
-    link_pageId, optional_text) => 
+export const create_element = (
+    current_index, 
+    page_id, 
+    element_type, 
+    order_on_page, 
+    element_above_order,
+    link_pageId, 
+    optional_text, 
+    creator) => 
     async (dispatch) => {
 
         // Get the order for the element on the page
@@ -90,6 +97,12 @@ export const create_element = (current_index, page_id, element_type, order_on_pa
 
             // Add the text to the newly created element
             response.data.text[0] = text_response
+
+        } else if (element_type === "Question") {
+            const question_response = await create_question(response.data.id, optional_text, creator)
+
+            // Add the question to the newly created element
+            response.data.text[0] = question_response
 
         } else if (element_type === "Kanban") {
             const kanban_response = await create_kanban(response.data.id, optional_text)
@@ -199,6 +212,27 @@ export const edit_text = (text_id, text) =>
         }, {headers: headers});
     };
 
+
+// Create a Question element
+const create_question = async (element_id, question_text, creator) => {
+    const response = await axios.post('/api_Questions/', {
+        body: "Question1", //question_text || " ",
+        page_element: element_id,
+        post_owner: creator,
+    }, {headers: headers});
+
+    return response.data
+}
+
+// Edit a Question element
+export const edit_question = (question_id, text) => 
+    async () => {
+        await axios.patch(`/api_Questions/${question_id}/`, {
+            text: text,
+        }, {headers: headers});
+    };
+
+    
 // Get page breadcrumb that shows the page location
 export const get_breadcrumb = (selectedPage, pages) => {
     let breadcrumb = []

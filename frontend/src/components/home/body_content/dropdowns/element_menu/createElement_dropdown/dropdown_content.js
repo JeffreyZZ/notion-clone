@@ -21,7 +21,7 @@ const CreateElement_dropdownContent = (props) => {
 
     // Function for when a user clicks to create a new item
     const create_element_func = async (element_type, element_above_order) => {
-        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order); 
+        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order, undefined, undefined, props.page.creator); 
         props.setDropdownShown(false);
     }
 
@@ -52,7 +52,7 @@ const CreateElement_dropdownContent = (props) => {
                 {/* Question */}
                 <DropdownOption
                     create_element_func={create_element_func}
-                    elementType="Text"
+                    elementType="Question"
                     element_above_order={element_above_order}
                     photo={question}
                     header="Question"

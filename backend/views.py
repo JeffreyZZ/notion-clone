@@ -77,6 +77,11 @@ class TextViewSet(viewsets.ModelViewSet):
     queryset = Text.objects.all()
     serializer_class = TextSerializer
 
+# Question API
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
 # Kanban API
 class KanbanViewSet(viewsets.ModelViewSet):
     queryset = Kanban.objects.all()

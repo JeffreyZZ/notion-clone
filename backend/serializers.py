@@ -8,6 +8,12 @@ class TextSerializer(serializers.ModelSerializer):
         model = Text
         fields = '__all__'
 
+class QuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Question
+        fields = '__all__'
+
 class Heading_2Serializer(serializers.ModelSerializer):
 
     class Meta:

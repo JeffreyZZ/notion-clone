@@ -6,6 +6,7 @@ import Kanban from './kanban';
 import Page_link from './page_link';
 import To_do from './to_do';
 import Table from './table';
+import Question from './question';
 
 export const page_elements_list = {
     Heading_1,
@@ -15,4 +16,5 @@ export const page_elements_list = {
     Page_link,
     To_do,
     Table,
+    Question,
 }
