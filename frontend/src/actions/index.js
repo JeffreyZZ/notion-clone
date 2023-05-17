@@ -102,7 +102,7 @@ export const create_element = (
             const question_response = await create_question(response.data.id, optional_text, creator)
 
             // Add the question to the newly created element
-            response.data.text[0] = question_response
+            response.data.question[0] = question_response
 
         } else if (element_type === "Kanban") {
             const kanban_response = await create_kanban(response.data.id, optional_text)
@@ -216,7 +216,7 @@ export const edit_text = (text_id, text) =>
 // Create a Question element
 const create_question = async (element_id, question_text, creator) => {
     const response = await axios.post('/api_Questions/', {
-        body: "Question1", //question_text || " ",
+        body: question_text || "",
         page_element: element_id,
         post_owner: creator,
     }, {headers: headers});
@@ -228,7 +228,7 @@ const create_question = async (element_id, question_text, creator) => {
 export const edit_question = (question_id, text) => 
     async () => {
         await axios.patch(`/api_Questions/${question_id}/`, {
-            text: text,
+            body: text,
         }, {headers: headers});
     };
 

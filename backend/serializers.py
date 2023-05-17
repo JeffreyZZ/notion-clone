@@ -117,6 +117,7 @@ class Page_elementSerializer(serializers.ModelSerializer):
     page_link = PageLinkSerializer(many=True, read_only=True)
     to_do = ToDoSerializer(many=True, read_only=True)
     table = TableSerializer(many=True, read_only=True)
+    question = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Page_element

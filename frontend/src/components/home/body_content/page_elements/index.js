@@ -9,7 +9,7 @@ import {  DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { connect } from 'react-redux';
 
 // Redux Actions
-import { edit_H1, edit_H2, edit_text, change_order } from "../../../../actions";
+import { edit_H1, edit_H2, edit_text, change_order, edit_question } from "../../../../actions";
 
 function PageElements(props) {
     const onDragEnd = async result => {
@@ -60,6 +60,7 @@ function PageElements(props) {
                                     edit_H1: props.edit_H1,
                                     edit_H2: props.edit_H2,
                                     edit_text: props.edit_text,
+                                    edit_question: props.edit_question,
                                 }
                                 
                                 return (
@@ -107,4 +108,5 @@ export default connect(null, {
     edit_H2, 
     edit_text,
     change_order,
+    edit_question,
 })(PageElements);

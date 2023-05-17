@@ -86,6 +86,10 @@ class Page(models.Model):
 
     class Meta:
         ordering = ['id']
+        db_table = 'qa_page'
+        # this is to ignore the existing '' table when is False, no database table 
+        # creation or deletion operations will be performed for this model. 
+        managed = False 
 
     def __str__(self):
         return f"{self.name}" 
@@ -95,6 +99,12 @@ class Page_element(models.Model):
     element_type = models.CharField(max_length=85)
     order_on_page = models.FloatField()
     color = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        db_table = 'qa_page_element'
+        # this is to ignore the existing 'Page_element' table when is False, no database table 
+        # creation or deletion operations will be performed for this model. 
+        managed = False 
 
     def __str__(self):
         return f"{self.id}"
@@ -197,7 +207,7 @@ class Tag(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-# Begin of Profile
+#region Profile
 # Profile is copied from SOF to keep the user compatible only between NT and SOF.
 # It's NOT used by NT at all for now.
 def random_img():
@@ -313,19 +323,18 @@ class Profile(models.Model):
         # no database table creation or deletion operations will be performed for this model. 
         managed = False 
 
-@receiver(post_save, sender=User)  # add this
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+    @receiver(post_save, sender=User)  # add this
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)  # add this
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    @receiver(post_save, sender=User)  # add this
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
-#End of Profile
+#endregion
 
-
-# Begin of Question
+# region Question
 ACTIVE_FOR_CHOICES = [
     ('ANSWERED', 'Answered'),
     ('MODIFIED', 'Modified'),
@@ -333,7 +342,6 @@ ACTIVE_FOR_CHOICES = [
 ]
 
 class Question(models.Model):
-    post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=5000, default='')
     body = MartorField()
     date = models.DateTimeField(auto_now_add=True)
@@ -356,9 +364,16 @@ class Question(models.Model):
     reversal_monitor = models.BooleanField(default=False)
     lastActiveFor = models.CharField(choices=ACTIVE_FOR_CHOICES, max_length=5000, default='', blank=True)
 
+    # FK needed by notion
+    page_element = models.ForeignKey("Page_element", related_name="question", null=True, on_delete=models.CASCADE, blank=True)
+    post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
     class Meta:
         ordering = ["-date"]
         db_table = "qa_question"
+        # this is to ignore the existing 'qa_question' table when is set to False, 
+        # no database table creation or deletion operations will be performed for this model. 
+        managed = False 
 
     # def save(self, *args, **kwargs):
     #     if not self.slug:
@@ -399,4 +414,4 @@ class Question(models.Model):
     def get_all_tags(self):
         return self.tags.all()
 
-    # End of Question
+    # endregion
