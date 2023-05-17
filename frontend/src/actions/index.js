@@ -216,6 +216,7 @@ export const edit_text = (text_id, text) =>
 // Create a Question element
 const create_question = async (element_id, question_text, creator) => {
     const response = await axios.post('/api_Questions/', {
+        title: question_text || "",
         body: question_text || "",
         page_element: element_id,
         post_owner: creator,
@@ -225,10 +226,11 @@ const create_question = async (element_id, question_text, creator) => {
 }
 
 // Edit a Question element
-export const edit_question = (question_id, text) => 
+export const edit_question = (question_id, title, body) => 
     async () => {
         await axios.patch(`/api_Questions/${question_id}/`, {
-            body: text,
+            title: title,
+            body: body,
         }, {headers: headers});
     };
 
