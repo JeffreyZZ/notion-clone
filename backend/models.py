@@ -5,6 +5,7 @@ from martor.models import MartorField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from random import choice
+from simple_history.models import HistoricalRecords
 from os.path import join as path_join
 from os import listdir
 from os.path import isfile
@@ -356,6 +357,7 @@ class Question(models.Model):
     is_protected = models.BooleanField(default=False)
     why_editing_question = models.CharField(max_length=5000, default='')
     is_deleted = models.BooleanField(default=False)
+    history = HistoricalRecords(related_name='his', table_name='qa_historicalquestion')
     answeredOnMinusTwo_Downvote = models.DateTimeField(auto_now_add=True)
     is_closed = models.BooleanField(default=False)
     closed_at = models.DateTimeField(auto_now_add=True, blank=True)

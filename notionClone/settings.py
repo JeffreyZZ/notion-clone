@@ -35,19 +35,20 @@ ALLOWED_HOSTS = ['127.0.0.1', 'notion-app-clone.herokuapp.com', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'backend',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
-    'rest_framework',
-    'knox',
-    'corsheaders',
     'frontend',
+    'knox',
     'martor',
-    'storages',
+    'rest_framework',
+    'simple_history',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
