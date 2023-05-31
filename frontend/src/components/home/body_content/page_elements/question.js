@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
+import QuestionIcon from '@mui/icons-material/HelpOutline';
 
 function Question(props) {
 
@@ -11,15 +12,22 @@ function Question(props) {
 
     return (
         <div className={`text-element ${props.page_element.color}`}>
-            <TextareaAutosize 
-                autoComplete="off" 
-                name="text" 
-                onChange={(e) => set_title(e.target.value)} value={title} 
-                placeholder="Type your question title here..." 
-                autoFocus 
-                className="text"
-                onBlur={()=> props.edit_question(props.page_element.question[0].id, title, body)} 
-                style={{ opacity: props.snapshot.isDragging? '0.5': '1' }} />
+            <div className={`to-do ${props.page_element.color}`}> 
+                {/* Render the question mark icon */}
+                <QuestionIcon 
+                    className="Question_icon" 
+                    style={{ opacity: props.snapshot.isDragging ? '0.5' : '1', height: '32px'}} />
+
+                <TextareaAutosize
+                    autoComplete="off"
+                    name="text"
+                    onChange={(e) => set_title(e.target.value)} value={title}
+                    placeholder="Type your question title here..."
+                    autoFocus
+                    className="text"
+                    onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
+                    style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
+            </div>
 
             <TextareaAutosize 
                 autoComplete="off" 

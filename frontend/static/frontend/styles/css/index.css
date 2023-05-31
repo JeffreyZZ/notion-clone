@@ -1586,6 +1586,11 @@ a {
     margin-left: 10px;
     font-family: "san-fran-med", "Helvetica, sans-serif"; }
 
+.Question_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;}    
+
 .form {
   display: flex;
   justify-content: center;
