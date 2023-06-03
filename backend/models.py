@@ -1,11 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from martor.models import MartorField
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from random import choice
-from simple_history.models import HistoricalRecords
 from os.path import join as path_join
 from os import listdir
 from os.path import isfile
@@ -334,86 +332,3 @@ class Profile(models.Model):
         instance.profile.save()
 
 #endregion
-
-# region Question
-ACTIVE_FOR_CHOICES = [
-    ('ANSWERED', 'Answered'),
-    ('MODIFIED', 'Modified'),
-    ('ASKED', 'Asked'),
-]
-
-class Question(models.Model):
-    title = models.CharField(max_length=5000, default='')
-    body = MartorField()
-    date = models.DateTimeField(auto_now_add=True)
-    active_date = models.DateTimeField(auto_now=True)
-    q_reputation = models.IntegerField(default=0)
-    q_edited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='q_edited_by', default='', null=True, blank=True)
-    q_edited_time = models.DateTimeField(auto_now_add=True)  
-    is_bountied = models.BooleanField(default=False)
-    bounty_date_announced = models.DateTimeField(auto_now_add=True)
-    limit_exced = models.BooleanField(default=False)
-    is_edited = models.BooleanField(default=False)
-    is_protected = models.BooleanField(default=False)
-    why_editing_question = models.CharField(max_length=5000, default='')
-    is_deleted = models.BooleanField(default=False)
-    history = HistoricalRecords(related_name='his', table_name='qa_historicalquestion')
-    answeredOnMinusTwo_Downvote = models.DateTimeField(auto_now_add=True)
-    is_closed = models.BooleanField(default=False)
-    closed_at = models.DateTimeField(auto_now_add=True, blank=True)
-    is_answer_accepted = models.BooleanField(default=False)
-    deleted_time = models.DateTimeField(auto_now_add=True, blank=True)
-    reversal_monitor = models.BooleanField(default=False)
-    lastActiveFor = models.CharField(choices=ACTIVE_FOR_CHOICES, max_length=5000, default='', blank=True)
-
-    # FK needed by notion
-    page_element = models.ForeignKey("Page_element", related_name="question", null=True, on_delete=models.CASCADE, blank=True)
-    post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ["-date"]
-        db_table = "qa_question"
-        # this is to ignore the existing 'qa_question' table when is set to False, 
-        # no database table creation or deletion operations will be performed for this model. 
-        managed = False 
-
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(
-    #             f"{self.title}-{self.id}", max_length=1000, lowercase=True
-    #         )
-
-    def __str__(self):
-        return f'[USER] - {self.post_owner} = [TITLE] - {self.title} - [Deleted?] - {self.is_deleted} - [Bountied?] - {self.is_bountied}'
-
-    def get_absolute_url(self):
-        # 'slug':self.slug})
-        return reverse('qa:questionDetailView', kwargs={'pk': self.pk, })
-
-    @property
-    def count_answers(self):
-        return Answer.objects.filter(questionans=self).exclude(is_deleted=True).count()
-
-    @property
-    def calculate_UpVote_DownVote(self):
-        get_Upvotes = self.qupvote_set.count()
-        get_DownVotes = self.qdownvote_set.count()
-        return get_Upvotes - get_DownVotes
-
-    @property
-    def calculate_viewers(self):
-        return self.viewers.all().count()
-
-    @property
-    def count_all_bookmarkers(self):
-        return self.bookmarkquestion_set.all().count()
-
-    @property
-    def lastEdited_by(self):
-        return self.q_edited_by
-
-    @property
-    def get_all_tags(self):
-        return self.tags.all()
-
-    # endregion

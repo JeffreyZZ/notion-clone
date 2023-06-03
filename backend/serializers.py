@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import *
+from .models_qa import *
+from .models_review import *
 from django.contrib.auth import authenticate
 
 class TextSerializer(serializers.ModelSerializer):
