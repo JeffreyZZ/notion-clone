@@ -4,11 +4,13 @@ from .models_qa import *
 from .models_review import *
 from django.contrib.auth import authenticate
 
+
 class TextSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Text
         fields = '__all__'
+
 
 class NotificationSerializer(serializers.ModelSerializer):
 
@@ -16,8 +18,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = '__all__'
 
+
 class QuestionSerializer(serializers.ModelSerializer):
-   
     notification = serializers.SerializerMethodField()
 
     class Meta:
@@ -25,14 +27,16 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_notification(self, instance):
-        notifications = instance.notifications.all()
+        notifications = instance.notifications.filter(is_read=False)
         return NotificationSerializer(notifications, many=True, read_only=True).data
+
 
 class Heading_2Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Heading_2
         fields = '__all__'
+
 
 class Heading_1Serializer(serializers.ModelSerializer):
 
