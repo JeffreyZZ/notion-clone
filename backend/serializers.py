@@ -10,11 +10,23 @@ class TextSerializer(serializers.ModelSerializer):
         model = Text
         fields = '__all__'
 
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'
+
 class QuestionSerializer(serializers.ModelSerializer):
+   
+    notification = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
         fields = '__all__'
+
+    def get_notification(self, instance):
+        notifications = instance.notifications.all()
+        return NotificationSerializer(notifications, many=True, read_only=True).data
 
 class Heading_2Serializer(serializers.ModelSerializer):
 

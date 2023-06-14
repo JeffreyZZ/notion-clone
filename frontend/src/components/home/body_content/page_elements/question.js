@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionIcon from '@mui/icons-material/HelpOutline';
+import NotificationIcon from '../other/notificationIcon';
+//import { Notifications } from '@material-ui/icons';
 
 function Question(props) {
 
@@ -27,6 +29,8 @@ function Question(props) {
                     className="text"
                     onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
                     style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
+                
+                <NotificationIcon count={props.page_element.question[0].notification.length} />
             </div>
 
             <TextareaAutosize 

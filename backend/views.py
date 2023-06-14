@@ -82,6 +82,18 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
+# Notification API
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        # Retrieve the current user from the request
+        user = self.request.user
+        # Perform the filtering based on the user
+        queryset = Notification.objects.filter(noti_receiver=user).order_by('-date_created')
+        return queryset
+
 # Kanban API
 class KanbanViewSet(viewsets.ModelViewSet):
     queryset = Kanban.objects.all()
@@ -91,6 +103,9 @@ class KanbanViewSet(viewsets.ModelViewSet):
 class Kanban_GroupViewSet(viewsets.ModelViewSet):
     queryset = Kanban_Group.objects.all()
     serializer_class = Kanban_GroupSerializer
+
+    def get_queryset(self):
+        return Kanban_Group.objects.all()
 
 # Kanban_Card API
 class Kanban_CardViewSet(viewsets.ModelViewSet):

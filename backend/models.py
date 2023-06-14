@@ -81,7 +81,7 @@ class Page(models.Model):
     parent = models.ForeignKey("Page", related_name='children', null=True, blank=True, on_delete=models.CASCADE)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.CharField(max_length=100, null=True, blank=True)
-    closed=models.BooleanField(default=True)
+    closed = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['id']

@@ -14,6 +14,7 @@ router.register(r'Texts', views.TextViewSet)
 router.register(r'Questions', views.QuestionViewSet)
 router.register(r'pageLinks', views.PageLinkViewSet)
 router.register(r'to_dos', views.ToDoViewSet)
+router.register(r'Notifications', views.NotificationViewSet)
 
 router.register(r'kanbans', views.KanbanViewSet)
 router.register(r'kanban_groups', views.Kanban_GroupViewSet)
