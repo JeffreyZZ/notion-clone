@@ -27,7 +27,10 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_notification(self, instance):
-        notifications = instance.notifications.filter(is_read=False)
+        # get the notifications of new answers to the question
+        notifications = instance.notifications.filter(
+            type_of_noti="NEW_ANSWER",
+            is_read=False)
         return NotificationSerializer(notifications, many=True, read_only=True).data
 
 
