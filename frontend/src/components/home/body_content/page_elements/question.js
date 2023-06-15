@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import NotificationIcon from '../other/notificationIcon';
-import { Collapse, Button } from '@material-ui/core';
+import { Collapse } from '@material-ui/core';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 
 //import { Notifications } from '@material-ui/icons';
 
@@ -53,10 +59,28 @@ function Question(props) {
                 onBlur={()=> props.edit_question(props.page_element.question[0].id, title, body)} 
                 style={{ opacity: props.snapshot.isDragging? '0.5': '1' }} />
 
-            {/* Render the question mark icon */}
+            {/* Render the question notifications */}
             <div>
                 <Collapse in={open}>
                     <div>
+                        <AppBar position="static">
+                            <Toolbar>
+                                <IconButton
+                                    size="small"
+                                    edge="start"
+                                    color="inherit"
+                                    aria-label="menu"
+                                    sx={{ mr: 1 }}
+                                >
+                                    <QuestionAnswerIcon />
+                                </IconButton>
+                                <Typography variant="h8" component="div" sx={{ flexGrow: 1 }}>
+                                    Answers
+                                </Typography>
+                                <Button color="inherit">Details</Button>
+                            </Toolbar>
+                        </AppBar>
+            
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
                             {props.page_element.question[0].notification.map((item, index) => (
                                 <li>
