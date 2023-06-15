@@ -24,13 +24,13 @@ const useStyles = makeStyles({
   },
 });
 
-const NotificationIcon = ({ count }) => {
+const NotificationIcon = ({ count, onClick }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.notificationIcon}>
-      {count > 0 && <Notifications />}
-      {count > 0 && <div className={classes.notificationCount}>{count}</div>}
+      {count > 0 && <Notifications onClick={onClick}/>}
+      {count > 0 && <div className={classes.notificationCount} onClick={onClick}>{count}</div>}
     </div>
   );
 };

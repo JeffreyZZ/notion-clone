@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import NotificationIcon from '../other/notificationIcon';
+import { Collapse, Button } from '@material-ui/core';
+
 //import { Notifications } from '@material-ui/icons';
 
 function Question(props) {
@@ -12,6 +14,12 @@ function Question(props) {
     const [body, set_body] = useState(props.page_element.question[0].body)
     const [title, set_title] = useState(props.page_element.question[0].title)
 
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+      setOpen(!open);
+    };
+    
     return (
         <div className={`text-element ${props.page_element.color}`}>
             <div className={`to-do ${props.page_element.color}`}> 
@@ -30,7 +38,9 @@ function Question(props) {
                     onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
                     style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
                 
-                <NotificationIcon count={props.page_element.question[0].notification.length} />
+                <NotificationIcon
+                    count={props.page_element.question[0].notification.length}
+                    onClick={handleClick} />
             </div>
 
             <TextareaAutosize 
@@ -42,6 +52,21 @@ function Question(props) {
                 className="text"
                 onBlur={()=> props.edit_question(props.page_element.question[0].id, title, body)} 
                 style={{ opacity: props.snapshot.isDragging? '0.5': '1' }} />
+
+            {/* Render the question mark icon */}
+            <div>
+                <Collapse in={open}>
+                    <div>
+                        <ul style={{ listStyleType: 'none', padding: 0 }}>
+                            {props.page_element.question[0].notification.map((item, index) => (
+                                <li>
+                                    <a href={item.url}>{item.url}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </Collapse>
+            </div>
         </div>
     )
 }
