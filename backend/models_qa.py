@@ -103,7 +103,7 @@ class Answer(models.Model):
     a_edited_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='a_edited_time')
     a_edited_time = models.DateTimeField(auto_now=True)
     answer_owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    questionans = models.ForeignKey(Question, on_delete=models.CASCADE)
+    questionans = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     date = models.DateTimeField(auto_now_add=True)
     deletedHistory = models.CharField(max_length=5000, choices=DELETE_HISTORY, default='')
     body = MartorField()
@@ -153,7 +153,7 @@ class Notification(models.Model):
     url = models.URLField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
-    question_noti = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="notifications", blank=True, null=True)
+    question_noti = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='notifications', blank=True, null=True)
     answer_noti = models.ForeignKey(Answer, on_delete=models.CASCADE, blank=True, null=True)
     
     class Meta:

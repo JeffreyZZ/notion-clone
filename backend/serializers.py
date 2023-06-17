@@ -19,8 +19,16 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AnswerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Answer
+        fields = '__all__'
+
+
 class QuestionSerializer(serializers.ModelSerializer):
     notification = serializers.SerializerMethodField()
+    answers = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
@@ -33,6 +41,11 @@ class QuestionSerializer(serializers.ModelSerializer):
             type_of_noti="NEW_ANSWER",
             is_read=False)
         return NotificationSerializer(notifications, many=True, read_only=True).data
+
+    def get_answers(self, instance):
+        # Get all the answers to the question for now.
+        answers = instance.answers.all()
+        return AnswerSerializer(answers, many=True, read_only=True).data
 
 
 class Heading_2Serializer(serializers.ModelSerializer):

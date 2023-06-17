@@ -9,8 +9,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-
-//import { Notifications } from '@material-ui/icons';
+import QuestionComment from './comment';
 
 function Question(props) {
 
@@ -82,10 +81,8 @@ function Question(props) {
                         </AppBar>
             
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {props.page_element.question[0].notification.map((item, index) => (
-                                <li>
-                                    <a href={item.url}>{item.url}</a>
-                                </li>
+                            {props.page_element.question[0].answers.map((item, index) => (
+                                <QuestionComment comment={item} unread={true} />
                             ))}
                         </ul>
                     </div>
