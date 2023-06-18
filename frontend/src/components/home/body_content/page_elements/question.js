@@ -15,23 +15,23 @@ function Question(props) {
 
     // In case there is an element whose type is text but there is no text...
     if ((props.page_element.question).length === 0) return null
-    
+
     const [body, set_body] = useState(props.page_element.question[0].body)
     const [title, set_title] = useState(props.page_element.question[0].title)
 
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
-      setOpen(!open);
+        setOpen(!open);
     };
-    
+
     return (
         <div className={`text-element ${props.page_element.color}`}>
-            <div className={`to-do ${props.page_element.color}`}> 
+            <div className={`to-do ${props.page_element.color}`}>
                 {/* Render the question mark icon */}
-                <QuestionIcon 
-                    className="Question_icon" 
-                    style={{ opacity: props.snapshot.isDragging ? '0.5' : '1', height: '32px'}} />
+                <QuestionIcon
+                    className="Question_icon"
+                    style={{ opacity: props.snapshot.isDragging ? '0.5' : '1', height: '32px' }} />
 
                 <TextareaAutosize
                     autoComplete="off"
@@ -42,23 +42,23 @@ function Question(props) {
                     className="text"
                     onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
                     style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
-                
+
                 <NotificationIcon
                     count={props.page_element.question[0].notification.length}
                     onClick={handleClick} />
             </div>
 
-            <TextareaAutosize 
-                autoComplete="off" 
-                name="text" 
-                onChange={(e) => set_body(e.target.value)} value={body} 
-                placeholder="Type your question details here..." 
-                autoFocus 
+            <TextareaAutosize
+                autoComplete="off"
+                name="text"
+                onChange={(e) => set_body(e.target.value)} value={body}
+                placeholder="Type your question details here..."
+                autoFocus
                 className="text"
-                onBlur={()=> props.edit_question(props.page_element.question[0].id, title, body)} 
-                style={{ opacity: props.snapshot.isDragging? '0.5': '1' }} />
+                onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
+                style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
 
-            {/* Render the question notifications */}
+            {/* Render the question's answers */}
             <div>
                 <Collapse in={open}>
                     <div>
@@ -79,11 +79,14 @@ function Question(props) {
                                 <Button color="inherit">Details</Button>
                             </Toolbar>
                         </AppBar>
-            
+
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {props.page_element.question[0].answers.map((item, index) => (
-                                <QuestionComment comment={item} unread={true} />
-                            ))}
+                            {props.page_element.question[0].answers.map((answer, index) => {
+                                const unread = props.page_element.question[0].notification.some(
+                                    (notification) => notification.answer_noti === answer.id
+                                );
+                                return <QuestionComment comment={answer} unread={unread} />
+                            })}
                         </ul>
                     </div>
                 </Collapse>
