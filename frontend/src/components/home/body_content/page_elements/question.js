@@ -85,7 +85,7 @@ function Question(props) {
                                 const unread = props.page_element.question[0].notification.some(
                                     (notification) => notification.answer_noti === answer.id
                                 );
-                                return <QuestionComment comment={answer} unread={unread} />
+                                return <QuestionComment comment={answer} unread={unread} props={props}/>
                             })}
                         </ul>
                     </div>

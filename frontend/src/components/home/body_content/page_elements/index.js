@@ -61,6 +61,9 @@ function PageElements(props) {
                                     edit_H2: props.edit_H2,
                                     edit_text: props.edit_text,
                                     edit_question: props.edit_question,
+                                    column_elements: props.selected_page.page_elements,
+                                    page_element_index: el_index,
+                                    page_creator: props.selected_page.page_creator
                                 }
                                 
                                 return (
