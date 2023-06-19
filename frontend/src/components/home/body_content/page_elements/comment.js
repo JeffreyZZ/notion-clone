@@ -10,7 +10,7 @@ import { create_element } from "../../../../actions"
 
 const useStyles = makeStyles((theme) => ({
     commentContainer: {
-        margin: theme.spacing(2),
+        margin: theme.spacing(1),
         padding: theme.spacing(2),
         borderLeftWidth: 4, // Add a left border to indicate unread comments
         borderLeftColor: theme.palette.primary.main, // Customize the border color
@@ -69,6 +69,9 @@ const Comment = ({ comment, unread, create_element, props }) => {
         // Handle paste logic here
     };
 
+    const date = new Date(comment.date);
+    const localTime = date.toLocaleString()
+
     return (
         <Box className={classes.container}>
             <div className={classes.buttonsContainer}>
@@ -81,15 +84,15 @@ const Comment = ({ comment, unread, create_element, props }) => {
             </div>
             <Paper className={classes.commentContainer} elevation={2}>
                 <Box display="flex" alignItems="center" marginBottom={1}>
-                    <Avatar alt={comment.author} />
+                    <Avatar alt={comment.author} style={{ marginRight: '8px' }}/>
                     <Typography variant="subtitle1" className={classes.commentAuthor}>
                         {comment.author}
                     </Typography>
-                    <Typography variant="caption" className={classes.commentDate}>
-                        {comment.date}
-                    </Typography>
+                    <Typography variant="body1">{comment.body}</Typography>
                 </Box>
-                <Typography variant="body1">{comment.body}</Typography>
+                <Typography variant="caption" className={classes.commentDate}>
+                    {localTime}
+                </Typography>
             </Paper>
         </Box>
     );
