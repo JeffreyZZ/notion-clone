@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import NotificationIcon from '../other/notificationIcon';
-import { Collapse } from '@material-ui/core';
+import Collapse from '@mui/material/Collapse';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Avatar, Paper, IconButton } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/system';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import PasteIcon from '@mui/icons-material/ContentPaste';
 
@@ -8,13 +8,12 @@ import PasteIcon from '@mui/icons-material/ContentPaste';
 import { connect } from 'react-redux';
 import { create_element } from "../../../../actions"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = styled((theme) => ({
     commentContainer: {
-        margin: theme.spacing(1),
-        padding: theme.spacing(2),
         borderLeftWidth: 4, // Add a left border to indicate unread comments
         borderLeftColor: theme.palette.primary.main, // Customize the border color
         borderLeftStyle: (props) => (props.unread ? 'solid' : 'none'), // Show the border only for unread comments
+        position: 'relative',
     },
     commentAuthor: {
         fontWeight: 'bold',
@@ -23,14 +22,13 @@ const useStyles = makeStyles((theme) => ({
     commentDate: {
         fontSize: '0.8rem',
         color: theme.palette.text.secondary,
-    },
-    container: {
-        position: 'relative',
+        margin: theme.spacing(1),
     },
     buttonsContainer: {
         position: 'absolute',
-        top: theme.spacing(1),
+        top: '50%',
         right: theme.spacing(1),
+        transform: 'translateY(-50%)',
         display: 'flex',
         alignItems: 'center',
     },
@@ -73,26 +71,30 @@ const Comment = ({ comment, unread, create_element, props }) => {
     const localTime = date.toLocaleString()
 
     return (
-        <Box className={classes.container}>
-            <div className={classes.buttonsContainer}>
-                <IconButton className={classes.button} aria-label="Copy" onClick={handleCopy}>
-                    <FileCopyIcon />
-                </IconButton>
-                <IconButton className={classes.button} aria-label="Paste" onClick={handlePaste}>
-                    <PasteIcon />
-                </IconButton>
-            </div>
+        <Box margin={0.5}>
             <Paper className={classes.commentContainer} elevation={2}>
-                <Box display="flex" alignItems="center" marginBottom={1}>
-                    <Avatar alt={comment.author} style={{ marginRight: '8px' }}/>
-                    <Typography variant="subtitle1" className={classes.commentAuthor}>
-                        {comment.author}
-                    </Typography>
-                    <Typography variant="body1">{comment.body}</Typography>
+                <Box display="flex" alignItems="center" padding={0.5}>
+                    <Avatar alt={comment.author} style={{ marginRight: '8px' }} />
+                    <Box flexGrow={1} marginRight={2}>
+                        <Typography variant="subtitle1" className={classes.commentAuthor}>
+                            {comment.author}
+                        </Typography>
+                        <Typography variant="body1">{comment.body}</Typography>
+                    </Box>
+                    <Box className={classes.buttonsContainer}>
+                        <IconButton className={classes.button} aria-label="Copy" onClick={handleCopy}>
+                            <FileCopyIcon />
+                        </IconButton>
+                        <IconButton className={classes.button} aria-label="Paste" onClick={handlePaste}>
+                            <PasteIcon />
+                        </IconButton>
+                    </Box>
                 </Box>
-                <Typography variant="caption" className={classes.commentDate}>
-                    {localTime}
-                </Typography>
+                <Box margin={0.5}>
+                    <Typography variant="caption" className={classes.commentDate}>
+                        {localTime}
+                    </Typography>
+                </Box>
             </Paper>
         </Box>
     );
