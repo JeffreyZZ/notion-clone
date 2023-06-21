@@ -1,4 +1,3 @@
-import { CardActions } from '@material-ui/core';
 import axios from 'axios';
 const regeneratorRuntime = require("regenerator-runtime");
 import { getCookie } from './index'

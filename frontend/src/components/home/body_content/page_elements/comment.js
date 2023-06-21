@@ -8,11 +8,9 @@ import PasteIcon from '@mui/icons-material/ContentPaste';
 import { connect } from 'react-redux';
 import { create_element } from "../../../../actions"
 
-const useStyles = styled((theme) => ({
+const useStyles = styled((theme, props) => ({
     commentContainer: {
-        borderLeftWidth: 4, // Add a left border to indicate unread comments
-        borderLeftColor: theme.palette.primary.main, // Customize the border color
-        borderLeftStyle: (props) => (props.unread ? 'solid' : 'none'), // Show the border only for unread comments
+        borderLeft: props.unread ? '4px solid red' : 'none', // Show the border only for unread comments
         position: 'relative',
     },
     commentAuthor: {
@@ -21,7 +19,7 @@ const useStyles = styled((theme) => ({
     },
     commentDate: {
         fontSize: '0.8rem',
-        color: theme.palette.text.secondary,
+        color: props.unread ? 'red' : theme.palette.text.secondary,
         margin: theme.spacing(1),
     },
     buttonsContainer: {
@@ -35,6 +33,10 @@ const useStyles = styled((theme) => ({
     button: {
         marginLeft: theme.spacing(1),
     },
+}));
+
+const StyledBox = styled(Box)(({ unread }) => ({
+    borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
 }));
 
 const Comment = ({ comment, unread, create_element, props }) => {
@@ -71,8 +73,8 @@ const Comment = ({ comment, unread, create_element, props }) => {
     const localTime = date.toLocaleString()
 
     return (
-        <Box margin={0.5}>
-            <Paper className={classes.commentContainer} elevation={2}>
+        <StyledBox margin={0.5} unread={unread}>
+            <Paper elevation={2}>
                 <Box display="flex" alignItems="center" padding={0.5}>
                     <Avatar alt={comment.author} style={{ marginRight: '8px' }} />
                     <Box flexGrow={1} marginRight={2}>
@@ -96,7 +98,7 @@ const Comment = ({ comment, unread, create_element, props }) => {
                     </Typography>
                 </Box>
             </Paper>
-        </Box>
+        </StyledBox>
     );
 };
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Notifications } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Badge, IconButton } from '@mui/material';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { styled } from '@mui/system';
 
-const useStyles = makeStyles({
+const useStyles = styled({
   notificationIcon: {
     position: 'relative',
     display: 'inline-block',
@@ -24,14 +25,25 @@ const useStyles = makeStyles({
   },
 });
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    fontSize: 10,
+    backgroundColor: 'red',
+    color: 'white',
+  },
+}));
+
 const NotificationIcon = ({ count, onClick }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.notificationIcon}>
-      {count > 0 && <Notifications onClick={onClick}/>}
-      {count > 0 && <div className={classes.notificationCount} onClick={onClick}>{count}</div>}
-    </div>
+    <Box position="relative">
+      <IconButton onClick={onClick}>
+        <StyledBadge badgeContent={count}>
+          <NotificationsIcon />
+        </StyledBadge>
+      </IconButton>
+    </Box>
   );
 };
 
