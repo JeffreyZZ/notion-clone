@@ -1,46 +1,19 @@
-import React from 'react';
-import { Box, Typography, Avatar, Paper, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Avatar, Paper, IconButton, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/system';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import PasteIcon from '@mui/icons-material/ContentPaste';
+import { FileCopy as FileCopyIcon, ContentPaste as PasteIcon, Edit as EditIcon, Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
 
 // Redux
 import { connect } from 'react-redux';
 import { create_element } from "../../../../actions"
-
-const useStyles = styled((theme, props) => ({
-    commentContainer: {
-        borderLeft: props.unread ? '4px solid red' : 'none', // Show the border only for unread comments
-        position: 'relative',
-    },
-    commentAuthor: {
-        fontWeight: 'bold',
-        marginRight: theme.spacing(1),
-    },
-    commentDate: {
-        fontSize: '0.8rem',
-        color: props.unread ? 'red' : theme.palette.text.secondary,
-        margin: theme.spacing(1),
-    },
-    buttonsContainer: {
-        position: 'absolute',
-        top: '50%',
-        right: theme.spacing(1),
-        transform: 'translateY(-50%)',
-        display: 'flex',
-        alignItems: 'center',
-    },
-    button: {
-        marginLeft: theme.spacing(1),
-    },
-}));
 
 const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
 }));
 
 const Comment = ({ comment, unread, create_element, props }) => {
-    const classes = useStyles({ unread: unread }); // Pass the unread status as a prop to useStyles
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedComment, setEditedComment] = useState(comment.body);
 
     const handleCopy = () => {
         // Find the order of the element after the current element
@@ -69,6 +42,26 @@ const Comment = ({ comment, unread, create_element, props }) => {
         // Handle paste logic here
     };
 
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditedComment(comment.body);
+    };
+
+    const handleSaveEdit = () => {
+        // Handle save logic here
+        // e.g., Call an action to update the comment in the Redux store or make an API request
+        setIsEditing(false);
+        // Add your logic to save the edited comment (editedComment) here
+    };
+
+    const handleCommentChange = (event) => {
+        setEditedComment(event.target.value);
+    };
+
     const date = new Date(comment.date);
     const localTime = date.toLocaleString()
 
@@ -78,22 +71,52 @@ const Comment = ({ comment, unread, create_element, props }) => {
                 <Box display="flex" alignItems="center" padding={0.5}>
                     <Avatar alt={comment.author} style={{ marginRight: '8px' }} />
                     <Box flexGrow={1} marginRight={2}>
-                        <Typography variant="subtitle1" className={classes.commentAuthor}>
+                        <Typography variant="subtitle1">
                             {comment.author}
                         </Typography>
-                        <Typography variant="body1">{comment.body}</Typography>
+                        {isEditing ? (
+                            <TextareaAutosize
+                                autoComplete="off"
+                                name="text"
+                                onChange={handleCommentChange}
+                                autoFocus
+                                className="text"
+                                style={{ opacity: '1' }}
+                                value={editedComment}
+                            />
+                        ) : (
+                            <Typography variant="body1">{comment.body}</Typography>
+                        )}
                     </Box>
-                    <Box className={classes.buttonsContainer}>
-                        <IconButton className={classes.button} aria-label="Copy" onClick={handleCopy}>
-                            <FileCopyIcon />
-                        </IconButton>
-                        <IconButton className={classes.button} aria-label="Paste" onClick={handlePaste}>
-                            <PasteIcon />
-                        </IconButton>
+                    <Box>
+                        {!isEditing && (
+                            <IconButton aria-label="Edit" onClick={handleEdit}>
+                                <EditIcon />
+                            </IconButton>
+                        )}
+                        {isEditing ? (
+                            <>
+                                <IconButton aria-label="Save" onClick={handleSaveEdit}>
+                                    <SaveIcon />
+                                </IconButton>
+                                <IconButton aria-label="Cancel" onClick={handleCancelEdit}>
+                                    <CancelIcon />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <>
+                                <IconButton aria-label="Copy" onClick={handleCopy}>
+                                    <FileCopyIcon />
+                                </IconButton>
+                                <IconButton aria-label="Paste" onClick={handlePaste}>
+                                    <PasteIcon />
+                                </IconButton>
+                            </>
+                        )}
                     </Box>
                 </Box>
                 <Box margin={0.5}>
-                    <Typography variant="caption" className={classes.commentDate}>
+                    <Typography variant="caption">
                         {localTime}
                     </Typography>
                 </Box>
