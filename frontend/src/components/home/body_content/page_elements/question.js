@@ -25,6 +25,11 @@ function Question(props) {
         setOpen(!open);
     };
 
+    const [isAdding, setIsAdding] = useState(false);
+    const handleAddComment = () => {
+        setIsAdding(true)
+    };
+
     return (
         <div className={`text-element ${props.page_element.color}`}>
             <div className={`to-do ${props.page_element.color}`}>
@@ -76,7 +81,7 @@ function Question(props) {
                                 <Typography variant="h8" component="div" sx={{ flexGrow: 1 }}>
                                     Answers
                                 </Typography>
-                                <Button color="inherit">Details</Button>
+                                <Button color="inherit" onClick={handleAddComment}>Add</Button>
                             </Toolbar>
                         </AppBar>
 
@@ -85,8 +90,12 @@ function Question(props) {
                                 const unread = props.page_element.question[0].notification.some(
                                     (notification) => notification.answer_noti === answer.id
                                 );
-                                return <QuestionComment comment={answer} unread={unread} props={props}/>
+                                return <QuestionComment comment={answer} unread={unread} props={props} />
                             })}
+
+                            {isAdding && (
+                                <QuestionComment comment={""} unread={false} props={props} isnew={isAdding} />
+                            )}
                         </ul>
                     </div>
                 </Collapse>

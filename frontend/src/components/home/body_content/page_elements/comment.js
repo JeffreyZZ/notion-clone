@@ -11,8 +11,8 @@ const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
 }));
 
-const Comment = ({ comment, unread, create_element, props }) => {
-    const [isEditing, setIsEditing] = useState(false);
+const Comment = ({ comment, unread, create_element, isnew, props }) => {
+    const [isEditing, setIsEditing] = useState(isnew);
     const [editedComment, setEditedComment] = useState(comment.body);
 
     const handleCopy = () => {
