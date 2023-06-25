@@ -63,12 +63,11 @@ function PageElements(props) {
                                     edit_question: props.edit_question,
                                     column_elements: props.selected_page.page_elements,
                                     page_element_index: el_index,
-                                    page_creator: props.selected_page.page_creator
+                                    page_creator: props.selected_page.creator
                                 }
                                 
                                 return (
-                                    <Draggable key={page_element.id} draggableId={page_element.id.toString()} 
-                                    index={el_index}>
+                                    <Draggable key={page_element.id} draggableId={page_element.id.toString()} index={el_index}>
 
                                         {(provided, snapshot) => {
                                             component_props.snapshot = snapshot

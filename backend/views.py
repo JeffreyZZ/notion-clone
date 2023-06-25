@@ -82,6 +82,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
+# Answer API
+class AnswerViewSet(viewsets.ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+
 # Notification API
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()

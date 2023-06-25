@@ -220,21 +220,31 @@ const create_question = async (element_id, question_text, creator) => {
         body: question_text || "",
         page_element: element_id,
         post_owner: creator,
-    }, {headers: headers});
+    }, { headers: headers });
 
     return response.data
 }
 
 // Edit a Question element
-export const edit_question = (question_id, title, body) => 
+export const edit_question = (question_id, title, body) =>
     async () => {
         await axios.patch(`/api_Questions/${question_id}/`, {
             title: title,
             body: body,
-        }, {headers: headers});
+        }, { headers: headers });
     };
 
-    
+// Create an Answer
+export const create_answer = async (element_id, answer_text, creator) => {
+    const response = await axios.post('/api_Answers/', {
+        answer_owner: creator,
+        body: answer_text,
+        questionans: element_id,
+    }, { headers: headers });
+
+    return response.data
+}
+
 // Get page breadcrumb that shows the page location
 export const get_breadcrumb = (selectedPage, pages) => {
     let breadcrumb = []
@@ -245,10 +255,10 @@ export const get_breadcrumb = (selectedPage, pages) => {
 const get_breadcrumb_helper = (selectedPage, pages, breadcrumb) => {
     for (const page of pages) {
         breadcrumb.push({ id: page.id, name: page.name })
-        
+
         if (page.id === selectedPage.id)
             return true
-        
+
         const result = get_breadcrumb_helper(selectedPage, page.children, breadcrumb)
         if (result) return true
         breadcrumb.pop()
@@ -261,17 +271,17 @@ const create_pageLink = async (element_id, page_id) => {
     const response = await axios.post('/api_pageLinks/', {
         page: page_id,
         page_element: element_id
-    }, {headers: headers});
+    }, { headers: headers });
 
     return response.data
 }
 
 // Change element background color
-export const change_bgColor = (element_id, color) => 
+export const change_bgColor = (element_id, color) =>
     async (dispatch) => {
         await axios.patch(`/api_page_elements/${element_id}/`, {
             color: color,
-        }, {headers: headers});
+        }, { headers: headers });
 
         dispatch({ type: 'CHANGE_BG_COLOR', payload: { element_id, color } });
     };

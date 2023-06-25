@@ -5,7 +5,7 @@ import { FileCopy as FileCopyIcon, ContentPaste as PasteIcon, Edit as EditIcon, 
 
 // Redux
 import { connect } from 'react-redux';
-import { create_element } from "../../../../actions"
+import { create_element, create_answer } from "../../../../actions"
 
 const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
@@ -52,10 +52,13 @@ const Comment = ({ comment, unread, create_element, isnew, props }) => {
     };
 
     const handleSaveEdit = () => {
-        // Handle save logic here
-        // e.g., Call an action to update the comment in the Redux store or make an API request
+        // Save the answer
+        create_answer(
+            props.page_element.question[0].id,
+            editedComment,
+            props.page_creator)
+
         setIsEditing(false);
-        // Add your logic to save the edited comment (editedComment) here
     };
 
     const handleCommentChange = (event) => {
@@ -126,5 +129,6 @@ const Comment = ({ comment, unread, create_element, isnew, props }) => {
 };
 
 export default connect(null, {
-    create_element
+    create_element,
+    create_answer
 })(Comment)
