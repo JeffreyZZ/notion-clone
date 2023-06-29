@@ -11,7 +11,7 @@ const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
 }));
 
-const Comment = ({ comment, unread, create_element, isnew, props }) => {
+const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding }) => {
     const [isEditing, setIsEditing] = useState(isnew);
     const [editedComment, setEditedComment] = useState(comment.body);
 
@@ -44,6 +44,7 @@ const Comment = ({ comment, unread, create_element, isnew, props }) => {
 
     const handleEdit = () => {
         setIsEditing(true);
+        setIsAdding(false)
     };
 
     const handleCancelEdit = () => {
@@ -53,12 +54,13 @@ const Comment = ({ comment, unread, create_element, isnew, props }) => {
 
     const handleSaveEdit = () => {
         // Save the answer
-        create_answer(
+        props.create_answer(
             props.page_element.question[0].id,
             editedComment,
             props.page_creator)
 
         setIsEditing(false);
+        setIsAdding(false)
     };
 
     const handleCommentChange = (event) => {

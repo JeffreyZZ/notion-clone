@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+// General React and Redux
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { create_answer } from './../../../../actions'
+
 import TextareaAutosize from 'react-textarea-autosize';
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import NotificationIcon from '../other/notificationIcon';
@@ -94,7 +98,7 @@ function Question(props) {
                             })}
 
                             {isAdding && (
-                                <QuestionComment comment={""} unread={false} props={props} isnew={isAdding} />
+                                <QuestionComment comment={""} unread={false} props={props} isnew={isAdding} setIsAdding={setIsAdding}/>
                             )}
                         </ul>
                     </div>
@@ -103,4 +107,13 @@ function Question(props) {
         </div>
     )
 }
-export default Question
+
+const mapStateToProps = (state) => {
+    return {
+        questions: state.questions,
+    }
+}
+
+export default connect(mapStateToProps, {
+    create_answer
+})(Question)

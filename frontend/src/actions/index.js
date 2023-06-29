@@ -235,15 +235,16 @@ export const edit_question = (question_id, title, body) =>
     };
 
 // Create an Answer
-export const create_answer = async (element_id, answer_text, creator) => {
-    const response = await axios.post('/api_Answers/', {
-        answer_owner: creator,
-        body: answer_text,
-        questionans: element_id,
-    }, { headers: headers });
+export const create_answer = (element_id, answer_text, creator) =>
+    async (dispatch) => {
+        const response = await axios.post('/api_Answers/', {
+            answer_owner: creator,
+            body: answer_text,
+            questionans: element_id,
+        }, { headers: headers });
 
-    return response.data
-}
+        dispatch({ type: 'ADD_ANSWER', payload: response });
+    }
 
 // Get page breadcrumb that shows the page location
 export const get_breadcrumb = (selectedPage, pages) => {
