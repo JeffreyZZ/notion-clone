@@ -234,8 +234,8 @@ export const edit_question = (question_id, title, body) =>
         }, { headers: headers });
     };
 
-// Create an Answer
-export const create_answer = (element_id, answer_text, creator) =>
+// And a new Answer
+export const add_answer = (element_id, answer_text, creator) =>
     async (dispatch) => {
         const response = await axios.post('/api_Answers/', {
             answer_owner: creator,

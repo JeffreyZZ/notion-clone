@@ -5,7 +5,7 @@ import { FileCopy as FileCopyIcon, ContentPaste as PasteIcon, Edit as EditIcon, 
 
 // Redux
 import { connect } from 'react-redux';
-import { create_element, create_answer } from "../../../../actions"
+import { create_element, add_answer } from "../../../../actions"
 
 const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread answers
@@ -51,7 +51,7 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
 
     const handleSaveEdit = () => {
         // Save the answer
-        props.create_answer(
+        props.add_answer(
             props.page_element.question[0].id,
             editedAnswer,
             props.page_creator)
@@ -126,5 +126,5 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
 
 export default connect(null, {
     create_element,
-    create_answer
+    add_answer
 })(Answer)
