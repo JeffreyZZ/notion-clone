@@ -8,13 +8,14 @@ import { connect } from 'react-redux';
 import { create_element, create_answer } from "../../../../actions"
 
 const StyledBox = styled(Box)(({ unread }) => ({
-    borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread comments
+    borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread answers
 }));
 
-const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding }) => {
+const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) => {
     const [isEditing, setIsEditing] = useState(isnew);
-    const [editedComment, setEditedComment] = useState(comment.body);
+    const [editedAnswer, setEditedAnswer] = useState(answer.body);
 
+    // copy the answer content and create a text component 
     const handleCopy = () => {
         // Find the order of the element after the current element
         let element_above_order = null
@@ -34,12 +35,8 @@ const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding })
             props.page_element.order_on_page,
             element_above_order,
             undefined,
-            comment.body,
+            answer.body,
             props.page_creator)
-    };
-
-    const handlePaste = () => {
-        // Handle paste logic here
     };
 
     const handleEdit = () => {
@@ -49,48 +46,48 @@ const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding })
 
     const handleCancelEdit = () => {
         setIsEditing(false);
-        setEditedComment(comment.body);
+        setEditedAnswer(answer.body);
     };
 
     const handleSaveEdit = () => {
         // Save the answer
         props.create_answer(
             props.page_element.question[0].id,
-            editedComment,
+            editedAnswer,
             props.page_creator)
 
         setIsEditing(false);
         setIsAdding(false)
     };
 
-    const handleCommentChange = (event) => {
-        setEditedComment(event.target.value);
+    const handleAnswerChange = (event) => {
+        setEditedAnswer(event.target.value);
     };
 
-    const date = new Date(comment.date);
-    const localTime = date.toLocaleString()
+    const date = answer.date ? new Date(answer.date) : new Date();
+    const localTime = date.toLocaleString();
 
     return (
         <StyledBox margin={0.5} unread={unread}>
             <Paper elevation={2}>
                 <Box display="flex" alignItems="center" padding={0.5}>
-                    <Avatar alt={comment.author} style={{ marginRight: '8px' }} />
+                    <Avatar alt={answer.author} style={{ marginRight: '8px' }} />
                     <Box flexGrow={1} marginRight={2}>
-                        <Typography variant="subtitle1">
-                            {comment.author}
+                        <Typography variant="author">
+                            {answer.author}
                         </Typography>
                         {isEditing ? (
                             <TextareaAutosize
                                 autoComplete="off"
                                 name="text"
-                                onChange={handleCommentChange}
+                                onChange={handleAnswerChange}
                                 autoFocus
                                 className="text"
                                 style={{ opacity: '1' }}
-                                value={editedComment}
+                                value={editedAnswer}
                             />
                         ) : (
-                            <Typography variant="body1">{comment.body}</Typography>
+                            <Typography variant="body1">{answer.body}</Typography>
                         )}
                     </Box>
                     <Box>
@@ -113,15 +110,12 @@ const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding })
                                 <IconButton aria-label="Copy" onClick={handleCopy}>
                                     <FileCopyIcon />
                                 </IconButton>
-                                <IconButton aria-label="Paste" onClick={handlePaste}>
-                                    <PasteIcon />
-                                </IconButton>
                             </>
                         )}
                     </Box>
                 </Box>
                 <Box margin={0.5}>
-                    <Typography variant="caption">
+                    <Typography variant="time">
                         {localTime}
                     </Typography>
                 </Box>
@@ -133,4 +127,4 @@ const Comment = ({ comment, unread, create_element, isnew, props, setIsAdding })
 export default connect(null, {
     create_element,
     create_answer
-})(Comment)
+})(Answer)

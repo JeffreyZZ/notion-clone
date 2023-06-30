@@ -1,19 +1,13 @@
 // General React and Redux
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch, connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from 'react-redux';
 import { create_answer } from './../../../../actions'
 
-import TextareaAutosize from 'react-textarea-autosize';
+import { AppBar, Button, Collapse, Typography, Avatar, Paper, IconButton, TextareaAutosize, Toolbar } from '@mui/material';
+import NotificationIcon from '../other/notificationIcon';;
 import QuestionIcon from '@mui/icons-material/HelpOutline';
-import NotificationIcon from '../other/notificationIcon';
-import Collapse from '@mui/material/Collapse';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import QuestionComment from './comment';
+import QuestionAnswer from './answer';
 
 function Question(props) {
 
@@ -30,7 +24,7 @@ function Question(props) {
     };
 
     const [isAdding, setIsAdding] = useState(false);
-    const handleAddComment = () => {
+    const handleAddAnswer = () => {
         setIsAdding(true)
     };
 
@@ -85,7 +79,7 @@ function Question(props) {
                                 <Typography variant="h8" component="div" sx={{ flexGrow: 1 }}>
                                     Answers
                                 </Typography>
-                                <Button color="inherit" onClick={handleAddComment}>Add</Button>
+                                <Button color="inherit" onClick={handleAddAnswer}>Add</Button>
                             </Toolbar>
                         </AppBar>
 
@@ -94,11 +88,11 @@ function Question(props) {
                                 const unread = props.page_element.question[0].notification.some(
                                     (notification) => notification.answer_noti === answer.id
                                 );
-                                return <QuestionComment comment={answer} unread={unread} props={props} />
+                                return <QuestionAnswer answer={answer} unread={unread} props={props} />
                             })}
 
                             {isAdding && (
-                                <QuestionComment comment={""} unread={false} props={props} isnew={isAdding} setIsAdding={setIsAdding}/>
+                                <QuestionAnswer answer={""} unread={false} props={props} isnew={isAdding} setIsAdding={setIsAdding} />
                             )}
                         </ul>
                     </div>
