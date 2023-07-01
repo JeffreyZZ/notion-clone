@@ -14,6 +14,20 @@ export const questionsReducer = (questions = [], action) => {
             question_array[index].answers.push(action.payload.data)
             return question_array;
 
+        case "DELETE_ANSWER":
+            // Copy questions
+            question_array = [...questions]
+
+            // Find the index of question
+            index = question_array.findIndex(x => x.id === action.payload.question_id)
+
+            // Filter out the deleted answer
+            const filteredAnswers = question_array[index].answers.filter(x => x.id !== action.payload.answer_id);
+
+            // update answer 
+            question_array[index].answers = filteredAnswers;
+            return question_array;
+
         case "EDIT_ANSWER":
             // Copy questions
             question_array = [...questions]

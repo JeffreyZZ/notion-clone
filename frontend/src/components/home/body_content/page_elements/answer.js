@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Box, Typography, Avatar, Paper, IconButton, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/system';
-import { FileCopy as FileCopyIcon, Edit as EditIcon, Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
+import {
+    Cancel as CancelIcon,
+    Delete as DeleteIcon,
+    Edit as EditIcon,
+    FileCopy as FileCopyIcon,
+    Save as SaveIcon,
+} from '@mui/icons-material';
 
 // Redux
 import { connect } from 'react-redux';
-import { create_element, add_answer, edit_answer } from "../../../../actions"
+import { create_element, add_answer, delete_answer, edit_answer } from "../../../../actions"
 
 const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread answers
@@ -70,6 +76,10 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
         setEditedAnswer(event.target.value);
     };
 
+    const handleDelete = () => {
+        props.delete_answer(props.page_element.question[0].id, answer.id)
+    };
+
     const date = answer.date ? new Date(answer.date) : new Date();
     const localTime = date.toLocaleString();
 
@@ -116,6 +126,9 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
                                 <IconButton aria-label="Copy" onClick={handleCopy}>
                                     <FileCopyIcon />
                                 </IconButton>
+                                <IconButton aria-label="Delete" onClick={handleDelete}>
+                                    <DeleteIcon />
+                                </IconButton>
                             </>
                         )}
                     </Box>
@@ -133,5 +146,6 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
 export default connect(null, {
     create_element,
     add_answer,
+    delete_answer,
     edit_answer
 })(Answer)

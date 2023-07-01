@@ -246,7 +246,7 @@ export const add_answer = (question_id, answer_body, answer_owner) =>
         dispatch({ type: 'ADD_ANSWER', payload: response });
     }
 
-// Edit an existing Answer
+// Edit an Answer
 export const edit_answer = (answer_id, answer_body) =>
     async (dispatch) => {
         const response = await axios.patch(`/api_Answers/${answer_id}/`, {
@@ -254,6 +254,15 @@ export const edit_answer = (answer_id, answer_body) =>
         }, { headers: headers });
 
         dispatch({ type: 'EDIT_ANSWER', payload: response });
+    }
+
+// Delete an Answer
+export const delete_answer = (question_id, answer_id) =>
+    async (dispatch) => {
+        const response = await axios.delete(`/api_Answers/${answer_id}/`, {
+        }, { headers: headers });
+
+        dispatch({ type: 'DELETE_ANSWER', payload: { question_id, answer_id } });
     }
 
 // Get page breadcrumb that shows the page location
