@@ -30,16 +30,16 @@ axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
 // Get all pages
-export const fetch_pages = (user_id) => 
+export const fetch_pages = (user_id) =>
     async (dispatch) => {
-        const response = await axios.get("/api_pages/", { 
-            params: { user_id: user_id, orphan: true } 
+        const response = await axios.get("/api_pages/", {
+            params: { user_id: user_id, orphan: true }
         })
         dispatch({ type: 'FETCH_PAGES', payload: response.data });
     };
 
 // Select page
-export const select_page = (page_id) => 
+export const select_page = (page_id) =>
     async (dispatch) => {
         let payload = null
         try {
@@ -55,14 +55,14 @@ export const select_page = (page_id) =>
 
 // Create page element
 export const create_element = (
-    current_index, 
-    page_id, 
-    element_type, 
-    order_on_page, 
+    current_index,
+    page_id,
+    element_type,
+    order_on_page,
     element_above_order,
-    link_pageId, 
-    optional_text, 
-    creator) => 
+    link_pageId,
+    optional_text,
+    creator) =>
     async (dispatch) => {
 
         // Get the order for the element on the page
@@ -71,14 +71,14 @@ export const create_element = (
         if (element_above_order === null) {
             order = order_on_page + 1
         } else {
-            order = (order_on_page + element_above_order)/2
+            order = (order_on_page + element_above_order) / 2
         }
 
         const response = await axios.post('/api_page_elements/', {
             element_type: element_type,
             page: page_id,
             order_on_page: order
-        }, {headers: headers});
+        }, { headers: headers });
 
         if (element_type === "Heading_1") {
             const heading_1_response = await create_H1(response.data.id)
@@ -136,11 +136,11 @@ export const create_element = (
     };
 
 // Delete page element
-export const delete_element = (element) => 
+export const delete_element = (element) =>
     async (dispatch) => {
 
         // Delete the element
-        await axios.delete(`/api_page_elements/${element.id}`, undefined, {headers: headers});
+        await axios.delete(`/api_page_elements/${element.id}`, undefined, { headers: headers });
 
         const source = {}
         source.droppableId = `${element.group}${element.column}`
@@ -152,9 +152,9 @@ export const delete_element = (element) =>
 export const change_order = (source, destination, new_order, element_id) => {
     axios.patch(`/api_page_elements/${element_id}/`, {
         order_on_page: new_order,
-    }, {headers: headers});
+    }, { headers: headers });
 
-    const payload = {source, destination, new_order, element_id}
+    const payload = { source, destination, new_order, element_id }
     return { type: 'CHANGE_ORDER', payload: payload };
 };
 
@@ -163,17 +163,17 @@ const create_H1 = async (element_id) => {
     const response = await axios.post('/api_Heading_1s/', {
         heading_text: "",
         page_element: element_id,
-    }, {headers: headers});
+    }, { headers: headers });
 
     return response.data
-} 
+}
 
 // Edit a Heading 1
-export const edit_H1 = (heading_id, heading_text) => 
+export const edit_H1 = (heading_id, heading_text) =>
     async () => {
         await axios.patch(`/api_Heading_1s/${heading_id}/`, {
             heading_text: heading_text,
-        }, {headers: headers});
+        }, { headers: headers });
     };
 
 // Create a Heading 2
@@ -181,17 +181,17 @@ const create_H2 = async (element_id, optional_text) => {
     const response = await axios.post('/api_Heading_2s/', {
         heading_text: optional_text || "",
         page_element: element_id,
-    }, {headers: headers});
+    }, { headers: headers });
 
     return response.data
-} 
+}
 
 // Edit a Heading 2
-export const edit_H2 = (heading_id, heading_text) => 
+export const edit_H2 = (heading_id, heading_text) =>
     async () => {
         await axios.patch(`/api_Heading_2s/${heading_id}/`, {
             heading_text: heading_text,
-        }, {headers: headers});
+        }, { headers: headers });
     };
 
 // Create a Text element
@@ -199,17 +199,17 @@ const create_text = async (element_id, optional_text) => {
     const response = await axios.post('/api_Texts/', {
         text: optional_text || "",
         page_element: element_id,
-    }, {headers: headers});
+    }, { headers: headers });
 
     return response.data
-} 
+}
 
 // Edit a Text element
-export const edit_text = (text_id, text) => 
+export const edit_text = (text_id, text) =>
     async () => {
         await axios.patch(`/api_Texts/${text_id}/`, {
             text: text,
-        }, {headers: headers});
+        }, { headers: headers });
     };
 
 
@@ -235,15 +235,25 @@ export const edit_question = (question_id, title, body) =>
     };
 
 // And a new Answer
-export const add_answer = (element_id, answer_text, creator) =>
+export const add_answer = (question_id, answer_body, answer_owner) =>
     async (dispatch) => {
         const response = await axios.post('/api_Answers/', {
-            answer_owner: creator,
-            body: answer_text,
-            questionans: element_id,
+            answer_owner: answer_owner,
+            body: answer_body,
+            questionans: question_id,
         }, { headers: headers });
 
         dispatch({ type: 'ADD_ANSWER', payload: response });
+    }
+
+// Edit an existing Answer
+export const edit_answer = (answer_id, answer_body) =>
+    async (dispatch) => {
+        const response = await axios.patch(`/api_Answers/${answer_id}/`, {
+            body: answer_body,
+        }, { headers: headers });
+
+        dispatch({ type: 'EDIT_ANSWER', payload: response });
     }
 
 // Get page breadcrumb that shows the page location

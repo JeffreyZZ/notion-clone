@@ -1,9 +1,9 @@
 // General React and Redux
 import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { add_answer } from './../../../../actions'
+import { add_answer, edit_answer } from './../../../../actions'
 
-import { AppBar, Button, Collapse, Typography, Avatar, Paper, IconButton, TextareaAutosize, Toolbar } from '@mui/material';
+import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -109,5 +109,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    add_answer
+    add_answer,
+    edit_answer
 })(Question)
