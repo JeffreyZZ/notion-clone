@@ -105,6 +105,9 @@ function Question(props) {
 const mapStateToProps = (state) => {
     return {
         questions: state.questions,
+        // connect Question component with selected_page in Redux store
+        // UI get re-rendered when selected_page is updated, such as color change.
+        selected_page: state.selected_page,
     }
 }
 
