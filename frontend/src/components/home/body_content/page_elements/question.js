@@ -17,6 +17,18 @@ function Question(props) {
     const [body, set_body] = useState(props.page_element.question[0].body)
     const [title, set_title] = useState(props.page_element.question[0].title)
 
+    const [initialValues, setInitialValues] = useState({
+        title: props.page_element.question[0].title,
+        body: props.page_element.question[0].body,
+    });
+
+    const handleBlur = () => {
+        if (title !== initialValues.title || body !== initialValues.body) {
+            props.edit_question(props.page_element.question[0].id, title, body);
+            setInitialValues({ title, body });
+        }
+    };
+
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
@@ -39,11 +51,11 @@ function Question(props) {
                 <TextareaAutosize
                     autoComplete="off"
                     name="text"
-                    onChange={(e) => set_title(e.target.value)} value={title}
+                    value={title}
+                    onChange={(e) => set_title(e.target.value)}
                     placeholder="Type your question title here..."
-                    autoFocus
                     className="text"
-                    onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
+                    onBlur={handleBlur}
                     style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
 
                 <NotificationIcon
@@ -54,11 +66,11 @@ function Question(props) {
             <TextareaAutosize
                 autoComplete="off"
                 name="text"
-                onChange={(e) => set_body(e.target.value)} value={body}
+                value={body}
+                onChange={(e) => set_body(e.target.value)}
                 placeholder="Type your question details here..."
-                autoFocus
                 className="text"
-                onBlur={() => props.edit_question(props.page_element.question[0].id, title, body)}
+                onBlur={handleBlur}
                 style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
 
             {/* Render the question's answers */}
