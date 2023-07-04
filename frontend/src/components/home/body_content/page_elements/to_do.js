@@ -16,42 +16,50 @@ function To_do(props) {
     const to_do = props.page_element.to_do[0]
 
     // State
+    const [initialDescription, setInitialDescription] = useState(to_do.description)
     const [description, set_description] = useState(to_do.description)
     const [complete, change_complete] = useState(to_do.completed)
 
     // Toggle check box
-    const toggleCheckBox = (status) => {
-        change_complete(status)
-        change_tickBox(status, to_do.id)
+    const toggleCheckBox = () => {
+        const newComplete = !complete;
+        change_complete(newComplete)
+        change_tickBox(newComplete, to_do.id)
+    }
+
+    const handleBlur = () => {
+        if (description !== initialDescription) {
+            change_description(description, to_do.id)
+            setInitialDescription(description)
+        }
     }
 
     return (
-        <div className={`to-do ${props.page_element.color}`} 
-            style={{ opacity: props.snapshot.isDragging? '0.5': '1' }}>
+        <div className={`to-do ${props.page_element.color}`}
+            style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }}>
 
             {/* Checkbox */}
             <div className="checkbox">
 
                 {/* Checkbox empty */}
-                <input type='checkbox' checked={complete} onChange={() => toggleCheckBox(true)}/>
-                
+                <input type='checkbox' checked={complete} onChange={toggleCheckBox} />
+
                 {/* Checkbox checked */}
-                {complete === true? 
-                    <span className="to-do-check" onClick={() => {
-                        toggleCheckBox(false);
-                    }}>
+                {complete === true ?
+                    <span className="to-do-check" onClick={toggleCheckBox}>
                         <CheckIcon fontSize="inherit" />
-                    </span>: null}
+                    </span> : null}
             </div>
-            
+
             {/* To-do text */}
-            <input 
+            <input
                 ref={myRef}
                 type="text"
-                onChange={(e) => set_description(e.target.value)} 
-                onBlur={() => change_description(description, to_do.id)} value={description? description: ""} 
-                placeholder="To-do" className={complete === false? "user_input": "user_input completed"} 
-                onKeyDown={(e) => { if(e.key === 'Enter') e.target.blur(); }} /> 
+                onChange={(e) => set_description(e.target.value)}
+                onBlur={handleBlur}
+                value={description ? description : ""}
+                placeholder="To-do" className={complete === false ? "user_input" : "user_input completed"}
+                onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }} />
         </div>
     )
 }
@@ -62,4 +70,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { change_tickBox, change_description })(To_do);
+export default connect(mapStateToProps, {
+    change_tickBox,
+    change_description
+})(To_do);
