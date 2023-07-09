@@ -12,19 +12,19 @@ import QuestionAnswer from './answer';
 function Question(props) {
 
     // In case there is an element whose type is text but there is no text...
-    if ((props.page_element.question).length === 0) return null
+    if (props.page_element.question === null || props.page_element.question.id === undefined ) return null
 
-    const [body, set_body] = useState(props.page_element.question[0].body)
-    const [title, set_title] = useState(props.page_element.question[0].title)
+    const [body, set_body] = useState(props.page_element.question.body)
+    const [title, set_title] = useState(props.page_element.question.title)
 
     const [initialValues, setInitialValues] = useState({
-        title: props.page_element.question[0].title,
-        body: props.page_element.question[0].body,
+        title: props.page_element.question.title,
+        body: props.page_element.question.body,
     });
 
     const handleBlur = () => {
         if (title !== initialValues.title || body !== initialValues.body) {
-            props.edit_question(props.page_element.question[0].id, title, body);
+            props.edit_question(props.page_element.question.id, title, body);
             setInitialValues({ title, body });
         }
     };
@@ -59,7 +59,7 @@ function Question(props) {
                     style={{ opacity: props.snapshot.isDragging ? '0.5' : '1' }} />
 
                 <NotificationIcon
-                    count={props.page_element.question[0].notification.length}
+                    count={props.page_element.question.notification.length}
                     onClick={handleClick} />
             </div>
 
@@ -96,8 +96,8 @@ function Question(props) {
                         </AppBar>
 
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {props.page_element.question[0].answers.map((answer, index) => {
-                                const unread = props.page_element.question[0].notification.some(
+                            {props.page_element.question.answers.map((answer, index) => {
+                                const unread = props.page_element.question.notification.some(
                                     (notification) => notification.answer_noti === answer.id
                                 );
                                 return <QuestionAnswer answer={answer} unread={unread} props={props} />

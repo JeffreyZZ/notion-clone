@@ -62,8 +62,11 @@ export const create_element = (
     element_above_order,
     link_pageId,
     optional_text,
-    creator) =>
+    creator,
+    sub_element_type) =>
     async (dispatch) => {
+
+        let question_id = 1;
 
         // Get the order for the element on the page
         let order = 0
@@ -74,11 +77,35 @@ export const create_element = (
             order = (order_on_page + element_above_order) / 2
         }
 
-        const response = await axios.post('/api_page_elements/', {
-            element_type: element_type,
-            page: page_id,
-            order_on_page: order
-        }, { headers: headers });
+        let response = null;
+
+        // Question supports referencing an existing question so its logic is different from the 
+        // others, where we need to create or get the question first before create page element.
+        if (element_type === "Question") {
+            let question_response = null
+
+            if (sub_element_type === null || sub_element_type === undefined) {
+                question_response = await create_question(optional_text, creator)
+            } else {
+                question_response = await get_question(question_id)
+            }
+
+            response = await axios.post('/api_page_elements/', {
+                element_type: element_type,
+                page: page_id,
+                order_on_page: order,
+                question: question_response.id
+            }, { headers: headers });
+
+            // Add the question to the newly created element
+            response.data.question[0] = question_response
+        } else {
+            response = await axios.post('/api_page_elements/', {
+                element_type: element_type,
+                page: page_id,
+                order_on_page: order
+            }, { headers: headers });
+        }
 
         if (element_type === "Heading_1") {
             const heading_1_response = await create_H1(response.data.id)
@@ -97,12 +124,6 @@ export const create_element = (
 
             // Add the text to the newly created element
             response.data.text[0] = text_response
-
-        } else if (element_type === "Question") {
-            const question_response = await create_question(response.data.id, optional_text, creator)
-
-            // Add the question to the newly created element
-            response.data.question[0] = question_response
 
         } else if (element_type === "Kanban") {
             const kanban_response = await create_kanban(response.data.id, optional_text)
@@ -214,11 +235,10 @@ export const edit_text = (text_id, text) =>
 
 
 // Create a Question element
-const create_question = async (element_id, question_text, creator) => {
+const create_question = async (question_text, creator) => {
     const response = await axios.post('/api_Questions/', {
         title: question_text || "",
         body: question_text || "",
-        page_element: element_id,
         post_owner: creator,
     }, { headers: headers });
 
@@ -233,6 +253,15 @@ export const edit_question = (question_id, title, body) =>
             body: body,
         }, { headers: headers });
     };
+
+// Get an existing Question element
+const get_question = async (question_id) => {
+    const response = await axios.get(`/api_Questions/${question_id}/`,
+        null,
+        { headers: headers });
+
+    return response.data
+}
 
 // And a new Answer
 export const add_answer = (question_id, answer_body, answer_owner) =>

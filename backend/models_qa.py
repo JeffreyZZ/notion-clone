@@ -7,8 +7,6 @@ from random import choice
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
 
-from .models import User
-
 #region Question
 ACTIVE_FOR_CHOICES = [
     ('ANSWERED', 'Answered'),
@@ -22,7 +20,7 @@ class Question(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     active_date = models.DateTimeField(auto_now=True)
     q_reputation = models.IntegerField(default=0)
-    q_edited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='q_edited_by', default='', null=True, blank=True)
+    q_edited_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='q_edited_by', default='', null=True, blank=True)
     q_edited_time = models.DateTimeField(auto_now_add=True)  
     is_bountied = models.BooleanField(default=False)
     bounty_date_announced = models.DateTimeField(auto_now_add=True)
@@ -41,9 +39,8 @@ class Question(models.Model):
     lastActiveFor = models.CharField(choices=ACTIVE_FOR_CHOICES, max_length=5000, default='', blank=True)
 
     # FK needed by notion
-    page_element = models.ForeignKey("Page_element", related_name="question", null=True, on_delete=models.CASCADE, blank=True)
-    post_owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    viewers = models.ManyToManyField(User, related_name='viewed_posts', blank=True)
+    post_owner = models.ForeignKey('User', on_delete=models.CASCADE)
+    viewers = models.ManyToManyField('User', related_name='viewed_posts', blank=True)
 
     class Meta:
         ordering = ["-date"]
@@ -100,15 +97,15 @@ DELETE_HISTORY = [
 ]
 
 class Answer(models.Model):
-    a_edited_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='a_edited_time')
+    a_edited_by = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True, related_name='a_edited_time')
     a_edited_time = models.DateTimeField(auto_now=True)
-    answer_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer_owner = models.ForeignKey('User', on_delete=models.CASCADE)
     questionans = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     date = models.DateTimeField(auto_now_add=True)
     deletedHistory = models.CharField(max_length=5000, choices=DELETE_HISTORY, default='')
     body = MartorField()
-    a_vote_ups = models.ManyToManyField(User, related_name='a_vote_up', blank=True)
-    a_vote_downs = models.ManyToManyField(User, related_name='a_vote_down', blank=True)
+    a_vote_ups = models.ManyToManyField('User', related_name='a_vote_up', blank=True)
+    a_vote_downs = models.ManyToManyField('User', related_name='a_vote_down', blank=True)
     accepted = models.BooleanField(default=False)
     a_reputation = models.IntegerField(default=0)
     is_bountied_awarded = models.BooleanField(default=False)
@@ -148,7 +145,7 @@ TYPE_OF_NOTI = [
 ]
 
 class Notification(models.Model):
-    noti_receiver = models.ForeignKey(User, on_delete=models.CASCADE, default='', related_name='noti_receiver')
+    noti_receiver = models.ForeignKey('User', on_delete=models.CASCADE, default='', related_name='noti_receiver')
     type_of_noti = models.CharField(max_length=30, choices=TYPE_OF_NOTI, default='')
     url = models.URLField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -180,7 +177,7 @@ PRIV_NOTIFY_CHOICES = [
 ]
 
 class PrivRepNotification(models.Model):
-    for_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    for_user = models.ForeignKey('User', on_delete=models.CASCADE)
     url = models.URLField(null=True, blank=True, default="#")
     for_if = models.CharField(max_length=30,default='')
     date_created_PrivNotify = models.DateTimeField(auto_now_add=True)

@@ -58,7 +58,7 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
     const handleSaveEdit = () => {
         if (isnew) {
             props.add_answer(
-                props.page_element.question[0].id,
+                props.page_element.question.id,
                 editedAnswer,
                 props.page_creator)
         }
@@ -77,7 +77,7 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
     };
 
     const handleDelete = () => {
-        props.delete_answer(props.page_element.question[0].id, answer.id)
+        props.delete_answer(props.page_element.question.id, answer.id)
     };
 
     const date = answer.date ? new Date(answer.date) : new Date();

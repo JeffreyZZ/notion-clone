@@ -10,6 +10,7 @@ from os.path import isfile
 import datetime
 from django.utils import timezone
 from django.urls import reverse
+from .models_qa import Question
 
 class MyAccountManager(BaseUserManager):
 
@@ -98,6 +99,10 @@ class Page_element(models.Model):
     element_type = models.CharField(max_length=85)
     order_on_page = models.FloatField()
     color = models.CharField(max_length=100, null=True, blank=True)
+    # TODO: one-to-many relationship, where a question could be fk referenced by multiple Page_element objects. 
+    # It would be good to move this relationship to a dedicated table, say question_pageelement. Or use Django
+    # GenericForeignKey to replace this. For now, Page_element only needs to fk question but others.
+    question = models.ForeignKey(Question, related_name="page_element", on_delete=models.DO_NOTHING, null=True, blank=True, default=None)
 
     class Meta:
         db_table = 'qa_page_element'

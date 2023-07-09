@@ -20,8 +20,8 @@ const CreateElement_dropdownContent = (props) => {
     const [listOfPage_open, setListOfPage_open] = useState(false);
 
     // Function for when a user clicks to create a new item
-    const create_element_func = async (element_type, element_above_order) => {
-        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order, undefined, "...", props.page.creator); 
+    const create_element_func = async (element_type, element_above_order, sub_element_type) => {
+        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order, undefined, "...", props.page.creator, sub_element_type); 
         props.setDropdownShown(false);
     }
 
@@ -56,7 +56,18 @@ const CreateElement_dropdownContent = (props) => {
                     element_above_order={element_above_order}
                     photo={question}
                     header="Question"
-                    subheader="Just start asking questions."
+                    subheader="Ask a new question."
+                />
+
+                {/* Question */}
+                <DropdownOption
+                    create_element_func={create_element_func}
+                    elementType="Question"
+                    sub_elementType="Existing"
+                    element_above_order={element_above_order}
+                    photo={question}
+                    header="Question"
+                    subheader="Reference an existing question."
                 />
 
                 {/* To do */}

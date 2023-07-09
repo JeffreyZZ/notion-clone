@@ -59,7 +59,7 @@ class AddPageViewSet(viewsets.ModelViewSet):
 
 # Page_element API
 class Page_elementViewSet(viewsets.ModelViewSet):
-    queryset = Page_element.objects.all().order_by('order_on_page')
+    queryset = Page_element.objects.select_related('question').all().order_by('order_on_page') # Page_element.objects.all().order_by('order_on_page')
     serializer_class = Page_elementSerializer
 
 # Heading_1 API

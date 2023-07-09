@@ -144,6 +144,8 @@ class TableSerializer(serializers.ModelSerializer):
         rows = instance.rows.all().order_by('order')
         return TableRowSerializer(rows, many=True, read_only=True).data
 #_________________________________________________________
+
+
 class Page_elementSerializer(serializers.ModelSerializer):
     heading_1 = Heading_1Serializer(many=True, read_only=True)
     heading_2 = Heading_2Serializer(many=True, read_only=True)
@@ -152,11 +154,28 @@ class Page_elementSerializer(serializers.ModelSerializer):
     page_link = PageLinkSerializer(many=True, read_only=True)
     to_do = ToDoSerializer(many=True, read_only=True)
     table = TableSerializer(many=True, read_only=True)
-    question = QuestionSerializer(many=True, read_only=True)
+    question = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all(), required=False)
 
     class Meta:
         model = Page_element
         fields = '__all__'
+
+    # For question property only, need to return question object when query.
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        question = instance.question
+        question_serializer = QuestionSerializer(question)
+        representation['question'] = question_serializer.data
+        return representation
+
+    # For question property only, need question id when write.
+    def to_internal_value(self, data):
+        question_id = data.get('question')
+        if question_id is not None:
+            data['question'] = question_id
+        else:
+            data.pop('question', None)
+        return super().to_internal_value(data)
 
 class PageSerializer(serializers.ModelSerializer):
     page_elements = serializers.SerializerMethodField()
