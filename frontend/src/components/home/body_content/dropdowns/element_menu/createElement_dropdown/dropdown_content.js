@@ -18,11 +18,17 @@ import board from "./dropdown_icons/board.png";
 
 const CreateElement_dropdownContent = (props) => {
     const [listOfPage_open, setListOfPage_open] = useState(false);
+    const [questionIdInputShown, setQuestionIdInputShown] = useState(false);
+    const [questionId, setQuestionId] = useState("");
 
     // Function for when a user clicks to create a new item
     const create_element_func = async (element_type, element_above_order, sub_element_type) => {
-        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order, undefined, "...", props.page.creator, sub_element_type); 
+        props.create_element(props.index, props.page.id, element_type, props.order_on_page, element_above_order, undefined, "...", props.page.creator, sub_element_type, undefined);
         props.setDropdownShown(false);
+    }
+
+    const showQuestionIdInputDialog = async () => {
+        setQuestionIdInputShown(true);
     }
 
     // Find the order of the element after the current element
@@ -35,6 +41,41 @@ const CreateElement_dropdownContent = (props) => {
             element_above_order = props.column_elements[props.index + 1].order_on_page
         }
     }
+
+    const handleInputChange = (event) => {
+        setQuestionId(event.target.value);
+    }
+
+    const handleCancel = (event) => {
+        setQuestionIdInputShown(false);
+        props.setDropdownShown(false);
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setQuestionIdInputShown(false);
+        props.setDropdownShown(false);
+        props.create_element(props.index, props.page.id, "Question", props.order_on_page, element_above_order, undefined, "...", props.page.creator, "Existing", questionId);
+    }
+
+    const centeredFormStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+    };
+
+    const inputContainerStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    };
+
+    const buttonRowStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '10px',
+    };
 
     if (!listOfPage_open)
         return (
@@ -61,7 +102,7 @@ const CreateElement_dropdownContent = (props) => {
 
                 {/* Question */}
                 <DropdownOption
-                    create_element_func={create_element_func}
+                    create_element_func={showQuestionIdInputDialog}
                     elementType="Question"
                     sub_elementType="Existing"
                     element_above_order={element_above_order}
@@ -130,6 +171,27 @@ const CreateElement_dropdownContent = (props) => {
                     header="Board"
                     subheader="Create a kanban board."
                 />
+
+                {/* Question Id Input Dialog */}
+                {questionIdInputShown &&
+                    <div style={centeredFormStyle}>
+                        <div className="semi-transparent-bg">
+                            <div className="modal">
+                                <form onSubmit={handleSubmit}>
+                                    <div style={inputContainerStyle}>
+                                        <label>
+                                            Enter the question id:
+                                            <input type="number" value={questionId} onChange={handleInputChange} />
+                                        </label>
+                                        <div style={buttonRowStyle}>
+                                            <button type="submit">Submit</button>
+                                            <button type="button" onClick={handleCancel}>Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>}
             </div>    
         )
     return (

@@ -63,10 +63,9 @@ export const create_element = (
     link_pageId,
     optional_text,
     creator,
-    sub_element_type) =>
+    sub_element_type,
+    question_id) =>
     async (dispatch) => {
-
-        let question_id = 1;
 
         // Get the order for the element on the page
         let order = 0
