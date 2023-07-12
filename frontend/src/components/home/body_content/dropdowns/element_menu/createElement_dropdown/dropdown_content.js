@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import ListOfPages from "./listOfPages";
 import DropdownOption from "./dropdown_option";
+import Button from '@mui/material/Button';
+import CancelIcon from '@mui/icons-material/Cancel';
+import SendIcon from '@mui/icons-material/Send';
 
 // Redux
 import { connect } from 'react-redux';
@@ -69,6 +72,12 @@ const CreateElement_dropdownContent = (props) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
+    };
+
+    const inputStyle = {
+        width: '250px', // Adjust the width as per your requirement
+        padding: '8px', // Adjust the padding as needed
     };
 
     const buttonRowStyle = {
@@ -181,11 +190,24 @@ const CreateElement_dropdownContent = (props) => {
                                     <div style={inputContainerStyle}>
                                         <label>
                                             Enter the question id:
-                                            <input type="number" value={questionId} onChange={handleInputChange} />
+                                            <input type="number" value={questionId} onChange={handleInputChange} style={inputStyle}/>
                                         </label>
                                         <div style={buttonRowStyle}>
-                                            <button type="submit">Submit</button>
-                                            <button type="button" onClick={handleCancel}>Cancel</button>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                style={{ color: 'black', marginRight: '8px' }}
+                                            >
+                                                Submit
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant="contained"
+                                                style={{ color: 'black' }}
+                                                onClick={handleCancel}
+                                            >
+                                                Cancel
+                                            </Button>
                                         </div>
                                     </div>
                                 </form>
