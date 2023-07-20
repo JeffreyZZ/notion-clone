@@ -19,6 +19,7 @@ class Question(models.Model):
     body = MartorField()
     date = models.DateTimeField(auto_now_add=True)
     active_date = models.DateTimeField(auto_now=True)
+    viewers = models.ManyToManyField('User', related_name='viewed_posts', blank=True)
     q_reputation = models.IntegerField(default=0)
     q_edited_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='q_edited_by', default='', null=True, blank=True)
     q_edited_time = models.DateTimeField(auto_now_add=True)  
@@ -40,7 +41,6 @@ class Question(models.Model):
 
     # FK needed by notion
     post_owner = models.ForeignKey('User', on_delete=models.CASCADE)
-    viewers = models.ManyToManyField('User', related_name='viewed_posts', blank=True)
 
     class Meta:
         ordering = ["-date"]
