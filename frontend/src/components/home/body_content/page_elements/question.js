@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { add_answer, delete_answer, edit_answer } from './../../../../actions'
 
-import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar } from '@mui/material';
+import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar, Chip, Stack } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -65,11 +65,11 @@ function Question(props) {
 
             {/* Render the question's tags */}
             <div>
-                {props.page_element.question.tags.map((tag) => (
-                    <span key={tag} className="tag">
-                        {tag}
-                    </span>
-                ))}
+                <Stack direction="row" spacing={1}>
+                    {props.page_element.question.tags.map((tag) => (
+                        <Chip key={tag} label={tag} color="primary" variant="outlined" size="small"/>
+                    ))}
+                </Stack>
             </div>
 
             <TextareaAutosize
