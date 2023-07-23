@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('backend', '0001_initial'),
+        ('qa', '0002_initial_tag'),
     ]
 
     operations = [

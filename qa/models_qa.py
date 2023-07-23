@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from random import choice
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 #region Question
 ACTIVE_FOR_CHOICES = [
@@ -17,6 +18,7 @@ ACTIVE_FOR_CHOICES = [
 class Question(models.Model):
     title = models.CharField(max_length=5000, default='')
     body = MartorField()
+    tags = TaggableManager()
     date = models.DateTimeField(auto_now_add=True)
     active_date = models.DateTimeField(auto_now=True)
     viewers = models.ManyToManyField('User', related_name='viewed_posts', blank=True)

@@ -253,7 +253,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=64, null=True)),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -261,7 +261,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=100, null=True)),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='table', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='table', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -285,7 +285,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('description', models.CharField(blank=True, max_length=500, null=True)),
                 ('completed', models.BooleanField()),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='to_do', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='to_do', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -293,7 +293,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.CharField(blank=True, max_length=5000, null=True)),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='text', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='text', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -302,8 +302,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('color', models.CharField(max_length=100)),
-                ('table_data', models.ManyToManyField(blank=True, related_name='tags', to='backend.Table_data')),
-                ('table_head', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tag_heads', to='backend.table_data')),
+                ('table_data', models.ManyToManyField(blank=True, related_name='tags', to='qa.Table_data')),
+                ('table_head', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tag_heads', to='qa.table_data')),
             ],
         ),
         migrations.CreateModel(
@@ -311,20 +311,20 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('order', models.FloatField()),
-                ('table', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rows', to='backend.table')),
+                ('table', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rows', to='qa.table')),
             ],
         ),
         migrations.AddField(
             model_name='table_data',
             name='table_row',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='data', to='backend.table_row'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='data', to='qa.table_row'),
         ),
         migrations.CreateModel(
             name='PageLink',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('page', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backend.page')),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='page_link', to='backend.page_element')),
+                ('page', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='qa.page')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='page_link', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -334,7 +334,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=64)),
                 ('color', models.CharField(max_length=100)),
                 ('order', models.FloatField()),
-                ('kanban', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban_group', to='backend.kanban')),
+                ('kanban', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban_group', to='qa.kanban')),
             ],
         ),
         migrations.CreateModel(
@@ -343,7 +343,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('description', models.CharField(blank=True, max_length=100, null=True)),
                 ('order_on_group', models.FloatField()),
-                ('kanban_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban_card', to='backend.kanban_group')),
+                ('kanban_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kanban_card', to='qa.kanban_group')),
             ],
         ),
         migrations.CreateModel(
@@ -374,7 +374,7 @@ class Migration(migrations.Migration):
                 ('history_date', models.DateTimeField()),
                 ('history_change_reason', models.CharField(max_length=100, null=True)),
                 ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('history_relation', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, related_name='his', to='backend.question')),
+                ('history_relation', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, related_name='his', to='qa.question')),
                 ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('post_owner', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('q_edited_by', models.ForeignKey(blank=True, db_constraint=False, default='', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
@@ -414,9 +414,9 @@ class Migration(migrations.Migration):
                 ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
                 ('a_edited_by', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('answer_owner', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('history_relation', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, related_name='anshis', to='backend.answer')),
+                ('history_relation', models.ForeignKey(db_constraint=False, on_delete=django.db.models.deletion.DO_NOTHING, related_name='anshis', to='qa.answer')),
                 ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('questionans', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='backend.question')),
+                ('questionans', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='qa.question')),
             ],
             options={
                 'verbose_name': 'historical answer',
@@ -432,7 +432,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('heading_text', models.CharField(blank=True, max_length=85, null=True)),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='heading_2', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='heading_2', to='qa.page_element')),
             ],
         ),
         migrations.CreateModel(
@@ -440,7 +440,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('heading_text', models.CharField(blank=True, max_length=85, null=True)),
-                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='heading_1', to='backend.page_element')),
+                ('page_element', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='heading_1', to='qa.page_element')),
             ],
         ),
     ]

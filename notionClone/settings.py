@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'notion-app-clone.herokuapp.com', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'backend',
+    'qa',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'martor',
     'rest_framework',
     'simple_history',
-    'storages'
+    'storages',
+    'taggit'
 ]
 
 MIDDLEWARE = [
@@ -159,7 +160,7 @@ STATIC_DIRS = {
     os.path.join(BASE_DIR, 'frontend/static')
 }
 
-AUTH_USER_MODEL = 'backend.User'
+AUTH_USER_MODEL = 'qa.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

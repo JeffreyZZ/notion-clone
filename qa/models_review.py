@@ -49,6 +49,7 @@ class LowQualityPostsCheck(models.Model):
         # this is to ignore the existing 'review_lowqualitypostscheck' table when is set to False, 
         # no database table creation or deletion operations will be performed for this model. 
         managed = False
+        app_label = 'qa'
 
     def __str__(self):
         if self.low_is:
@@ -71,6 +72,7 @@ class ReviewLowQualityPosts(models.Model):
         # this is to ignore the existing 'review_reviewlowqualityposts' table when is set to False, 
         # no database table creation or deletion operations will be performed for this model. 
         managed = False
+        app_label = 'qa'
 
     def __str__(self):
         if self.is_reviewed:
