@@ -63,6 +63,15 @@ function Question(props) {
                     onClick={handleClick} />
             </div>
 
+            {/* Render the question's tags */}
+            <div>
+                {props.page_element.question.tags.map((tag) => (
+                    <span key={tag} className="tag">
+                        {tag}
+                    </span>
+                ))}
+            </div>
+
             <TextareaAutosize
                 autoComplete="off"
                 name="text"

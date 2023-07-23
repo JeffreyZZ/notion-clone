@@ -1523,6 +1523,17 @@ a {
   margin-bottom: 3px;
   align-items: center; }
 
+/*Question*/
+.tag {
+  display: inline-block;
+  background-color: #f3f4f6;
+  color: #1a1a1b;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
 .heading_1 {
   font-size: 1.8rem;
   color: #37352f;

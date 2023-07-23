@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'simple_history',
     'storages',
-    'taggit'
+    'taggit',
+    'taggit_serializer'
 ]
 
 MIDDLEWARE = [

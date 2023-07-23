@@ -3,6 +3,7 @@ from .models import *
 from .models_qa import *
 from .models_review import *
 from django.contrib.auth import authenticate
+from taggit_serializer.serializers import (TagListSerializerField, TaggitSerializer)
 
 
 class TextSerializer(serializers.ModelSerializer):
@@ -26,9 +27,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(TaggitSerializer, serializers.ModelSerializer):
     notification = serializers.SerializerMethodField()
     answers = serializers.SerializerMethodField()
+    tags = TagListSerializerField()
 
     class Meta:
         model = Question
