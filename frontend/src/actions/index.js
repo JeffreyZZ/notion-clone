@@ -303,6 +303,16 @@ export const remove_question_tag = (question_id, tagToRemove) =>
         dispatch({ type: 'REMOVE_QUESTION_TAG', payload: { question_id, tagToRemove } });
     }
 
+// Add the question's tag
+export const add_question_tag = (question_id, tagToAdd) =>
+    async (dispatch) => {
+        const response = await axios.post(`/api_Questions/${question_id}/add_tag/`, {
+            tag_name: tagToAdd,
+        }, { headers: headers });
+
+        dispatch({ type: 'ADD_QUESTION_TAG', payload: { question_id, tagToAdd } });
+    }
+
 // Get page breadcrumb that shows the page location
 export const get_breadcrumb = (selectedPage, pages) => {
     let breadcrumb = []

@@ -61,14 +61,25 @@ export const questionsReducer = (questions = [], action) => {
             // Copy questions
             question_array = [...questions]
 
-            // Find all the questions and remove answer
+            // Find the question and remove the tag
             question_array.forEach((question, index) => {
                 if (question.id === action.payload.question_id) {
                     const updatedTags = question_array[index].tags.filter((tag) => tag !== action.payload.tagToRemove);
                     question_array[index].tags = updatedTags;
                 }
             });
+            return question_array;
 
+        case "ADD_QUESTION_TAG":
+            // Copy questions
+            question_array = [...questions]
+
+            // Find the question and add the tag
+            question_array.forEach((question, index) => {
+                if (question.id === action.payload.question_id) {
+                    question_array[index].tags.push(action.payload.tagToAdd);
+                }
+            });
             return question_array;
 
         default:

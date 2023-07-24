@@ -1,7 +1,7 @@
 // General React and Redux
 import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { add_answer, delete_answer, edit_answer, remove_question_tag } from './../../../../actions'
+import { add_answer, delete_answer, edit_answer, remove_question_tag, add_question_tag } from './../../../../actions'
 
 import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar, Chip, Stack } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
@@ -21,6 +21,8 @@ function Question(props) {
         title: props.page_element.question.title,
         body: props.page_element.question.body,
     });
+
+    const [newTag, setNewTag] = useState("");
 
     const handleBlur = () => {
         if (title !== initialValues.title || body !== initialValues.body) {
@@ -42,9 +44,14 @@ function Question(props) {
 
     // Function to remove an existing tag
     const handleRemoveTag = (tagToRemove) => {
-        const updatedTags = props.page_element.question.tags.filter((tag) => tag !== tagToRemove);
-        props.page_element.question.tags = updatedTags;
         props.remove_question_tag(props.page_element.question.id, tagToRemove);
+    };
+
+    const handleAddTag = () => {
+        if (newTag.trim() !== "") {
+            props.add_question_tag(props.page_element.question.id, newTag.trim());
+            setNewTag("");
+        }
     };
 
     return (
@@ -71,11 +78,22 @@ function Question(props) {
             </div>
 
             {/* Render the question's tags */}
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
                 <Stack direction="row" spacing={1}>
                     {props.page_element.question.tags.map((tag) => (
                         <Chip key={tag} label={tag} color="primary" variant="outlined" size="small" onDelete={() => handleRemoveTag(tag)} />
                     ))}
+
+                    <input
+                        type="text"
+                        value={newTag}
+                        onChange={(e) => setNewTag(e.target.value)}
+                        placeholder="Add a new tag"
+                        style={{ marginBottom: "8px", marginRight: "8px" }}
+                    />
+                    <Button variant="contained" color="primary" size="small" style={{ textTransform: "none" }} onClick={handleAddTag} >
+                        Add Tag
+                    </Button>
                 </Stack>
             </div>
 
@@ -143,5 +161,6 @@ export default connect(mapStateToProps, {
     add_answer,
     delete_answer,
     edit_answer,
-    remove_question_tag
+    remove_question_tag,
+    add_question_tag,
 })(Question)
