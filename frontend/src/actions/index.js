@@ -293,6 +293,16 @@ export const delete_answer = (question_id, answer_id) =>
         dispatch({ type: 'DELETE_ANSWER', payload: { question_id, answer_id } });
     }
 
+// Remove the question's tag
+export const remove_question_tag = (question_id, tagToRemove) =>
+    async (dispatch) => {
+        const response = await axios.post(`/api_Questions/${question_id}/remove_tag/`, {
+            tag_name: tagToRemove,
+        }, { headers: headers });
+
+        dispatch({ type: 'REMOVE_QUESTION_TAG', payload: { question_id, tagToRemove } });
+    }
+
 // Get page breadcrumb that shows the page location
 export const get_breadcrumb = (selectedPage, pages) => {
     let breadcrumb = []

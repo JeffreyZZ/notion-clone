@@ -57,6 +57,20 @@ export const questionsReducer = (questions = [], action) => {
             });
             return question_array
 
+        case "REMOVE_QUESTION_TAG":
+            // Copy questions
+            question_array = [...questions]
+
+            // Find all the questions and remove answer
+            question_array.forEach((question, index) => {
+                if (question.id === action.payload.question_id) {
+                    const updatedTags = question_array[index].tags.filter((tag) => tag !== action.payload.tagToRemove);
+                    question_array[index].tags = updatedTags;
+                }
+            });
+
+            return question_array;
+
         default:
             return questions;
     }

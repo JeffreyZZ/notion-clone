@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from rest_framework.decorators import action
 from .models import *
 
 from rest_framework import viewsets, permissions, generics, status
@@ -81,6 +82,22 @@ class TextViewSet(viewsets.ModelViewSet):
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+    # Remove question's tag API
+    @action(detail=True, methods=['post'])
+    def remove_tag(self, request, pk=None):
+        question = self.get_object()
+        # Assuming you send the tag_name in the request data
+        tag_name = request.data.get('tag_name')
+        if not tag_name:
+            return Response({'error': 'Tag name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Use the remove() method to remove the specified tag
+            question.tags.remove(tag_name)
+            question.save()
+            return Response({'message': 'Tag removed successfully.'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Answer API
 class AnswerViewSet(viewsets.ModelViewSet):

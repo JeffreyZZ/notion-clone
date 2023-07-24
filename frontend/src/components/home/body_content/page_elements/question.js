@@ -1,7 +1,7 @@
 // General React and Redux
 import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { add_answer, delete_answer, edit_answer } from './../../../../actions'
+import { add_answer, delete_answer, edit_answer, remove_question_tag } from './../../../../actions'
 
 import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar, Chip, Stack } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
@@ -40,6 +40,13 @@ function Question(props) {
         setIsAdding(true)
     };
 
+    // Function to remove an existing tag
+    const handleRemoveTag = (tagToRemove) => {
+        const updatedTags = props.page_element.question.tags.filter((tag) => tag !== tagToRemove);
+        props.page_element.question.tags = updatedTags;
+        props.remove_question_tag(props.page_element.question.id, tagToRemove);
+    };
+
     return (
         <div className={`text-element ${props.page_element.color}`}>
             <div className={`to-do ${props.page_element.color}`}>
@@ -67,7 +74,7 @@ function Question(props) {
             <div>
                 <Stack direction="row" spacing={1}>
                     {props.page_element.question.tags.map((tag) => (
-                        <Chip key={tag} label={tag} color="primary" variant="outlined" size="small"/>
+                        <Chip key={tag} label={tag} color="primary" variant="outlined" size="small" onDelete={() => handleRemoveTag(tag)} />
                     ))}
                 </Stack>
             </div>
@@ -135,5 +142,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     add_answer,
     delete_answer,
-    edit_answer
+    edit_answer,
+    remove_question_tag
 })(Question)
