@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { add_answer, delete_answer, edit_answer, remove_question_tag, add_question_tag } from './../../../../actions'
 
-import { AppBar, Button, Collapse, Typography, IconButton, TextareaAutosize, Toolbar, Chip, Stack } from '@mui/material';
+import { AppBar, Button, Chip, Collapse, IconButton, Input, Stack, TextareaAutosize, Toolbar, Typography } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
 import QuestionIcon from '@mui/icons-material/HelpOutline';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -84,14 +84,15 @@ function Question(props) {
                         <Chip key={tag} label={tag} color="primary" variant="outlined" size="small" onDelete={() => handleRemoveTag(tag)} />
                     ))}
 
-                    <input
-                        type="text"
+                    <Input
+                        variant="outlined"
+                        size="small"
                         value={newTag}
                         onChange={(e) => setNewTag(e.target.value)}
                         placeholder="Add a new tag"
-                        style={{ marginBottom: "8px", marginRight: "8px" }}
+                        style={{ height: "32px"}} // Set the height to match Chip
                     />
-                    <Button variant="contained" color="primary" size="small" style={{ textTransform: "none" }} onClick={handleAddTag} >
+                    <Button variant="contained" color="primary" size="small" style={{ textTransform: "none", height: "32px"}} onClick={handleAddTag} >
                         Add Tag
                     </Button>
                 </Stack>
