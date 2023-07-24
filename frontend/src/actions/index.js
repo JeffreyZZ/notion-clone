@@ -300,7 +300,7 @@ export const remove_question_tag = (question_id, tagToRemove) =>
             tag_name: tagToRemove,
         }, { headers: headers });
 
-        dispatch({ type: 'REMOVE_QUESTION_TAG', payload: { question_id, tagToRemove } });
+        dispatch({ type: 'REMOVE_QUESTION_TAG', payload: response });
     }
 
 // Add the question's tag
@@ -310,7 +310,7 @@ export const add_question_tag = (question_id, tagToAdd) =>
             tag_name: tagToAdd,
         }, { headers: headers });
 
-        dispatch({ type: 'ADD_QUESTION_TAG', payload: { question_id, tagToAdd } });
+        dispatch({ type: 'ADD_QUESTION_TAG', payload: response });
     }
 
 // Get page breadcrumb that shows the page location

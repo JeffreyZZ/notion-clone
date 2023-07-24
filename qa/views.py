@@ -95,7 +95,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
             # Use the remove() method to remove the specified tag
             question.tags.remove(tag_name)
             question.save()
-            return Response({'message': 'Tag removed successfully.'}, status=status.HTTP_200_OK)
+            # Serialize the updated Question object and return it in the response
+            serializer = self.get_serializer(question)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -111,7 +113,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
             # Use the add() method to add the specified tag
             question.tags.add(tag_name)
             question.save()
-            return Response({'message': 'Tag added successfully.'}, status=status.HTTP_200_OK)
+            # Serialize the updated Question object and return it in the response
+            serializer = self.get_serializer(question)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

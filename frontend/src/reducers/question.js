@@ -63,9 +63,9 @@ export const questionsReducer = (questions = [], action) => {
 
             // Find the question and remove the tag
             question_array.forEach((question, index) => {
-                if (question.id === action.payload.question_id) {
-                    const updatedTags = question_array[index].tags.filter((tag) => tag !== action.payload.tagToRemove);
-                    question_array[index].tags = updatedTags;
+                if (question.id === action.payload.data.id) {
+                    question_array[index].tags = action.payload.data.tags;
+                    return;
                 }
             });
             return question_array;
@@ -76,8 +76,9 @@ export const questionsReducer = (questions = [], action) => {
 
             // Find the question and add the tag
             question_array.forEach((question, index) => {
-                if (question.id === action.payload.question_id) {
-                    question_array[index].tags.push(action.payload.tagToAdd);
+                if (question.id === action.payload.data.id) {
+                    question_array[index].tags = action.payload.data.tags;
+                    return;
                 }
             });
             return question_array;
