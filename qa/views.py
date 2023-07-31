@@ -124,6 +124,50 @@ class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
 
+    # API: add favorite for an answer
+    @action(detail=True, methods=['patch'])
+    def add_favorite(self, request, pk=None):
+        try:
+            answer = self.get_object()
+            user_id = request.data.get('user_id')
+
+            if user_id:
+                user = User.objects.get(pk=user_id)
+                if user not in answer.a_vote_ups.all():
+                    answer.a_vote_ups.add(user)
+                    answer.save()
+                    # Serialize the updated answer object and return it in the response
+                serializer = self.get_serializer(answer)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'user_id not provided'}, status=400)
+        except Answer.DoesNotExist:
+            return Response({'error': 'Answer not found'}, status=404)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=400)
+
+    # API: remove favorite for an answer
+    @action(detail=True, methods=['patch'])
+    def remove_favorite(self, request, pk=None):
+        try:
+            answer = self.get_object()
+            user_id = request.data.get('user_id')
+
+            if user_id:
+                user = User.objects.get(pk=user_id)
+                if user in answer.a_vote_ups.all():
+                    answer.a_vote_ups.remove(user)
+                    answer.save()
+                    # Serialize the updated answer object and return it in the response
+                serializer = self.get_serializer(answer)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'user_id not provided'}, status=400)
+        except Answer.DoesNotExist:
+            return Response({'error': 'Answer not found'}, status=404)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=400)
+
 # Notification API
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { add_answer, delete_answer, edit_answer, remove_question_tag, add_question_tag } from './../../../../actions'
+import { add_answer_favorite, remove_answer_favorite } from './../../../../actions/question'
 
 import { AppBar, Button, Chip, Collapse, IconButton, Input, Stack, TextareaAutosize, Toolbar, Typography } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
@@ -160,6 +161,8 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     add_answer,
+    add_answer_favorite,
+    remove_answer_favorite,
     delete_answer,
     edit_answer,
     remove_question_tag,

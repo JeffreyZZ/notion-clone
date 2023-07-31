@@ -44,6 +44,32 @@ export const questionsReducer = (questions = [], action) => {
 
             return question_array;
 
+        case "ADD_ANSWER_FAVORITE":
+            // Copy questions
+            question_array = [...questions]
+            // Find all the questions and update answer
+            question_array.forEach((question, index) => {
+                if (question.id === action.payload.data.questionans) {
+                    // Find the index of answer and update answer
+                    let answer_index = question_array[index].answers.findIndex(x => x.id === action.payload.data.id);
+                    question_array[index].answers[answer_index].a_vote_ups = action.payload.data.a_vote_ups;
+                }
+            });
+            return question_array;
+
+        case "REMOVE_ANSWER_FAVORITE":
+            // Copy questions
+            question_array = [...questions]
+            // Find all the questions and update answer
+            question_array.forEach((question, index) => {
+                if (question.id === action.payload.data.questionans) {
+                    // Find the index of answer and update answer
+                    let answer_index = question_array[index].answers.findIndex(x => x.id === action.payload.data.id);
+                    question_array[index].answers[answer_index].a_vote_ups = action.payload.data.a_vote_ups;
+                }
+            });
+            return question_array;
+
         case "SELECT_PAGE":
             // add all the questions of the page to redux store
             question_array = []

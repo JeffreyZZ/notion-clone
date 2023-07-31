@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Avatar, Paper, IconButton, TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/system';
 import {
@@ -7,11 +7,12 @@ import {
     Edit as EditIcon,
     FileCopy as FileCopyIcon,
     Save as SaveIcon,
+    Favorite as FavoriteIcon,
 } from '@mui/icons-material';
 
 // Redux
 import { connect } from 'react-redux';
-import { create_element, add_answer, delete_answer, edit_answer } from "../../../../actions"
+import { create_element } from "../../../../actions"
 
 const StyledBox = styled(Box)(({ unread }) => ({
     borderLeft: unread ? '4px solid red' : 'none', // Show the border only for unread answers
@@ -20,6 +21,12 @@ const StyledBox = styled(Box)(({ unread }) => ({
 const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) => {
     const [isEditing, setIsEditing] = useState(isnew);
     const [editedAnswer, setEditedAnswer] = useState(answer.body);
+    const [isFavorite, setIsFavorite] = useState(answer.a_vote_ups?.includes(props.page_creator) ?? false);
+
+    // Use useEffect to keep isFavorite in sync with the Redux store
+    useEffect(() => {
+        setIsFavorite(answer.a_vote_ups?.includes(props.page_creator) ?? false);
+    }, [answer.a_vote_ups, props.page_creator]);
 
     // copy the answer content and create a text component 
     const handleCopy = () => {
@@ -67,9 +74,7 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
                 answer.id,
                 editedAnswer)
         }
-
         setIsEditing(false);
-        setIsAdding(false)
     };
 
     const handleAnswerChange = (event) => {
@@ -78,6 +83,13 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
 
     const handleDelete = () => {
         props.delete_answer(props.page_element.question.id, answer.id)
+    };
+
+    const handleToggleFavorite = () => {
+        if (!isFavorite)
+            props.add_answer_favorite(answer.id, props.page_creator)
+        else
+            props.remove_answer_favorite(answer.id, props.page_creator)
     };
 
     const date = answer.date ? new Date(answer.date) : new Date();
@@ -107,6 +119,12 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
                         )}
                     </Box>
                     <Box>
+                        <IconButton
+                            aria-label="Favorite"
+                            onClick={handleToggleFavorite}
+                            color={isFavorite ? 'error' : 'default'}>
+                            <FavoriteIcon />
+                        </IconButton>
                         {!isEditing && (
                             <IconButton aria-label="Edit" onClick={handleEdit}>
                                 <EditIcon />
@@ -144,8 +162,5 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
 };
 
 export default connect(null, {
-    create_element,
-    add_answer,
-    delete_answer,
-    edit_answer
+    create_element
 })(Answer)
