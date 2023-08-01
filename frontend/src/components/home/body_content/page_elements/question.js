@@ -7,6 +7,7 @@ import { add_answer_favorite, remove_answer_favorite } from './../../../../actio
 import { AppBar, Button, Chip, Collapse, IconButton, Input, Stack, TextareaAutosize, Toolbar, Typography } from '@mui/material';
 import NotificationIcon from '../other/notificationIcon';;
 import QuestionIcon from '@mui/icons-material/HelpOutline';
+import AddIcon from '@mui/icons-material/AddCircleOutline';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import QuestionAnswer from './answer';
 
@@ -53,6 +54,13 @@ function Question(props) {
             props.add_question_tag(props.page_element.question.id, newTag.trim());
             setNewTag("");
         }
+        setTagInputVisible(false)
+    };
+
+    const [tagInputVisible, setTagInputVisible] = useState(false);
+
+    const handlePlusButtonClick = () => {
+        setTagInputVisible(!tagInputVisible);
     };
 
     return (
@@ -85,17 +93,33 @@ function Question(props) {
                         <Chip key={tag} label={tag} color="primary" variant="outlined" size="small" onDelete={() => handleRemoveTag(tag)} />
                     ))}
 
-                    <Input
-                        variant="outlined"
-                        size="small"
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
-                        placeholder="Add a new tag"
-                        style={{ height: "32px"}} // Set the height to match Chip
-                    />
-                    <Button variant="contained" color="primary" size="small" style={{ textTransform: "none", height: "32px"}} onClick={handleAddTag} >
-                        Add Tag
-                    </Button>
+                    {/* Render the plus sign button */}
+                    <IconButton onClick={handlePlusButtonClick} size="small" color="primary">
+                        <AddIcon />
+                    </IconButton>
+
+                    {/* Render the input and button conditionally */}
+                    {tagInputVisible && (
+                        <>
+                            <Input
+                                variant="outlined"
+                                size="small"
+                                value={newTag}
+                                onChange={(e) => setNewTag(e.target.value)}
+                                placeholder="Add a new tag"
+                                style={{ height: "32px" }}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="small"
+                                style={{ textTransform: "none", height: "32px" }}
+                                onClick={handleAddTag}
+                            >
+                                Add Tag
+                            </Button>
+                        </>
+                    )}
                 </Stack>
             </div>
 
