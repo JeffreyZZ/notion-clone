@@ -239,6 +239,7 @@ const create_question = async (question_text, creator) => {
         title: question_text || "",
         body: question_text || "",
         post_owner: creator,
+        tags: []
     }, { headers: headers });
 
     return response.data
