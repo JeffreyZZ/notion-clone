@@ -98,6 +98,9 @@ export const create_element = (
 
             // Add the question to the newly created element
             response.data.question[0] = question_response
+
+            // Add the question to redux store
+            dispatch({ type: 'ADD_QUESTION', payload: question_response });
         } else {
             response = await axios.post('/api_page_elements/', {
                 element_type: element_type,

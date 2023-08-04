@@ -3,9 +3,18 @@
 //
 export const questionsReducer = (questions = [], action) => {
     switch (action.type) {
-        case "ADD_ANSWER":
+        case "ADD_QUESTION":
             // Copy questions
             let question_array = [...questions]
+            // Add a question if not exists
+            if (!question_array.some((question) => question.id === action.payload.id)){
+                question_array.push(action.payload);
+            }
+            return question_array;
+
+        case "ADD_ANSWER":
+            // Copy questions
+            question_array = [...questions]
 
             // Find all the questions and add answer
             question_array.forEach((question, index) => {

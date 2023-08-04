@@ -1,5 +1,5 @@
 // General React and Redux
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import { add_answer, delete_answer, edit_answer, remove_question_tag, add_question_tag } from './../../../../actions'
 import { add_answer_favorite, remove_answer_favorite } from './../../../../actions/question'
@@ -63,6 +63,16 @@ function Question(props) {
         setTagInputVisible(!tagInputVisible);
     };
 
+    // make sure tags are updated when it's update. Don't use props.page_element.question
+    // because it's NOT in redux store and cannot be listened to. 
+    const [tags, setTags] = useState(props.page_element.question.tags);
+    useEffect(() => {
+        const question = props.questions.find(q => q.id === props.page_element.question.id);
+        if (question) {
+            setTags(question.tags);
+        }
+    }, [props.questions]);
+
     return (
         <div className={`text-element ${props.page_element.color}`}>
             <div className={`to-do ${props.page_element.color}`}>
@@ -89,7 +99,7 @@ function Question(props) {
             {/* Render the question's tags */}
             <div style={{ display: "flex", alignItems: "center" }}>
                 <Stack direction="row" spacing={1}>
-                    {props.page_element.question.tags.map((tag) => (
+                    {tags.map((tag) => (
                         <Chip key={tag} label={tag} color="primary" variant="outlined" size="small" onDelete={() => handleRemoveTag(tag)} />
                     ))}
 
