@@ -63,13 +63,15 @@ function Question(props) {
         setTagInputVisible(!tagInputVisible);
     };
 
-    // make sure tags are updated when it's update. Don't use props.page_element.question
-    // because it's NOT in redux store and cannot be listened to. 
+    // make sure tags and answers are updated when it's update. Don't use props.page_element.question
+    // as it's NOT in redux store and cannot be listened to when the question is newly added particular.
     const [tags, setTags] = useState(props.page_element.question.tags);
+    const [answers, setAnswers] = useState(props.page_element.question.answers);
     useEffect(() => {
         const question = props.questions.find(q => q.id === props.page_element.question.id);
         if (question) {
             setTags(question.tags);
+            setAnswers(question.answers);
         }
     }, [props.questions]);
 
@@ -166,7 +168,7 @@ function Question(props) {
                         </AppBar>
 
                         <ul style={{ listStyleType: 'none', padding: 0 }}>
-                            {props.page_element.question.answers.map((answer, index) => {
+                            {answers.map((answer, index) => {
                                 const unread = props.page_element.question.notification.some(
                                     (notification) => notification.answer_noti === answer.id
                                 );
