@@ -75,6 +75,7 @@ const Answer = ({ answer, unread, create_element, isnew, props, setIsAdding }) =
                 editedAnswer)
         }
         setIsEditing(false);
+        setIsAdding(false)
     };
 
     const handleAnswerChange = (event) => {
