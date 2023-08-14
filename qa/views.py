@@ -6,6 +6,7 @@ from .models import *
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
@@ -82,6 +83,7 @@ class TextViewSet(viewsets.ModelViewSet):
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
 
     # API: remove question's tag
     @action(detail=True, methods=['post'])
@@ -123,6 +125,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
 
     # API: add favorite for an answer
     @action(detail=True, methods=['patch'])

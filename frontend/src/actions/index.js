@@ -41,6 +41,12 @@ export const fetch_pages = (user_id) =>
 // Select page
 export const select_page = (page_id) =>
     async (dispatch) => {
+
+        // TODO: move to headers initialization
+        if (!headers.hasOwnProperty('Authorization')) {
+            headers['Authorization'] = `Token ${localStorage.getItem('token')}`;
+        }
+        
         let payload = null
         try {
             const response = await axios.get(`api_pages/${page_id}`)

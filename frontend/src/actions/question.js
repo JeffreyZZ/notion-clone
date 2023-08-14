@@ -13,6 +13,10 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 // Add favorite to an Answer
 export const add_answer_favorite = (answer_id, page_creator) =>
     async (dispatch) => {
+        if (!headers.hasOwnProperty('Authorization')) {
+            headers['Authorization'] = `Token ${localStorage.getItem('token')}`;
+        }
+
         const response = await axios.patch(`/api_Answers/${answer_id}/add_favorite/`, {
             user_id: page_creator // TODO: this should be replaced by request.user on server side
         }, { headers: headers });
@@ -23,6 +27,10 @@ export const add_answer_favorite = (answer_id, page_creator) =>
 // Remove favorite from an Answer
 export const remove_answer_favorite = (answer_id, page_creator) =>
 async (dispatch) => {
+    if (!headers.hasOwnProperty('Authorization')) {
+        headers['Authorization'] = `Token ${localStorage.getItem('token')}`;
+    }
+
     const response = await axios.patch(`/api_Answers/${answer_id}/remove_favorite/`, {
         user_id: page_creator // TODO: this should be replaced by request.user on server side
     }, { headers: headers });
