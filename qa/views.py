@@ -132,9 +132,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def add_favorite(self, request, pk=None):
         try:
             answer = self.get_object()
-            user = User.objects.get(pk=request.user.id)
-            if user not in answer.a_vote_ups.all():
-                answer.a_vote_ups.add(user)
+            if request.user not in answer.a_vote_ups.all():
+                answer.a_vote_ups.add(request.user)
                 answer.save()
             # Serialize the updated answer object and return it in the response
             serializer = self.get_serializer(answer)
@@ -149,9 +148,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def remove_favorite(self, request, pk=None):
         try:
             answer = self.get_object()
-            user = User.objects.get(pk=request.user.id)
-            if user in answer.a_vote_ups.all():
-                answer.a_vote_ups.remove(user)
+            if request.user in answer.a_vote_ups.all():
+                answer.a_vote_ups.remove(request.user)
                 answer.save()
             # Serialize the updated answer object and return it in the response
             serializer = self.get_serializer(answer)
