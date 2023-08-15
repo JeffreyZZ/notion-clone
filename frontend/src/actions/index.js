@@ -265,10 +265,7 @@ export const edit_question = (question_id, title, body) =>
 
 // Get an existing Question element
 const get_question = async (question_id) => {
-    const response = await axios.get(`/api_Questions/${question_id}/`,
-        null,
-        { headers: headers });
-
+    const response = await axios.get(`/api_Questions/${question_id}/`, { headers: headers });
     return response.data
 }
 
