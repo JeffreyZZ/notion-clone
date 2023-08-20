@@ -1,0 +1,13 @@
+# Use an official MySQL image as the base
+FROM mysql:8.0
+
+# Set the MySQL root password
+ENV MYSQL_ROOT_PASSWORD XXXXX
+
+# Set the MySQL database name, user, and password
+ENV MYSQL_DATABASE quesnotion
+ENV MYSQL_USER root
+ENV MYSQL_PASSWORD XXXXXX
+
+# Expose the MySQL port
+EXPOSE 3306
