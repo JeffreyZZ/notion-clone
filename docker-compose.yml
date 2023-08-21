@@ -1,4 +1,4 @@
-version: '3'
+version: '1'
 
 services:
   mysql:
@@ -24,6 +24,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8081
     depends_on:
       - mysql
+    environment:
+      DATABASE_HOST: mysql
 
   react:
     build:

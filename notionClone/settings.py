@@ -107,7 +107,7 @@ DATABASES = {
          'NAME': 'quesnotion',
          'USER': 'root',
          'PASSWORD': '',
-         'HOST': 'localhost',
+         'HOST': os.environ.get('DATABASE_HOST', 'localhost'), #'mysql', #'127.0.0.1', #localhost
          'PORT': '3306',
          'OPTIONS': {'charset': 'utf8mb4'},
      }
