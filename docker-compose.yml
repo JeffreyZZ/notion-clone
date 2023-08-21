@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: User@123
+      MYSQL_DATABASE: quesnotion
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8081:8081"
+    networks:
+      - mynetwork
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8081
+    depends_on:
+      - mysql
+
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: npm start
+
+networks:
+  mynetwork:

@@ -85,6 +85,7 @@ mccabe==0.6.1
 mypy-extensions==0.4.3
 mysql-connector==2.2.9
 mysql-connector-python==8.0.20
+mysqlclient==2.1.1
 numpy==1.23.2
 packaging==20.9
 pathspec==0.8.1
