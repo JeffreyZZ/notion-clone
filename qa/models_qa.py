@@ -43,6 +43,7 @@ class Question(models.Model):
 
     # FK needed by notion
     post_owner = models.ForeignKey('User', on_delete=models.CASCADE)
+    published = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-date"]
